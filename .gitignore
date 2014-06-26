@@ -1,2 +1,24 @@
 *.pyc
 .DS_Store
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+eggs/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+pip-log.txt
+pip-delete-this-directory.txt
