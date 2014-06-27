@@ -4,7 +4,7 @@
 # Each python function in here will map to 1 or more request URLs.
 # *************************************************************************
 import requests
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, jsonify
 from app import app, oid
 
 # The first page/home that will be displayed first
@@ -30,4 +30,4 @@ def create_or_login(resp):
 @app.route('/topgames')
 def topgames():
     toplist=requests.get("https://api.twitch.tv/kraken/games/top")
-    return toplist.text
+    return jsonify(toplist.json())
