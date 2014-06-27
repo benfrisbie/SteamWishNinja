@@ -4,6 +4,26 @@
   </head>
   <body>
     <h1>Hello world!</h1>
-    <a href="{{ url_for('login') }}"><button type="button">Sign in with Steam</button></a>
+    
+    {% if g.user == None %}
+    	<a href="{{ url_for('login') }}"><button type="button">Sign in with Steam</button></a>
+    {% else %}
+    	Signed in -> <br>
+    	Nickname: {{g.user.nickname}} <br>
+    	SteamID: {{g.user.steam_id}} <br>
+    	<a href="{{ url_for('logout') }}"><button type="button">Logout</button></a>
+    {% endif %}
+    	
+    <br>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }} </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
   </body>
 </html> 
