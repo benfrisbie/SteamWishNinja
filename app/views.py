@@ -3,6 +3,7 @@
 # Holds all the handlers that will respond to requests from the browser.
 # Each python function in here will map to 1 or more request URLs.
 # *************************************************************************
+import requests
 from flask import render_template, redirect, url_for
 from app import app, oid
 
@@ -24,3 +25,9 @@ def login():
 @oid.after_login
 def create_or_login(resp):
     return 'You signed in!'
+
+
+@app.route('/topgames')
+def topgames():
+    toplist=requests.get("https://api.twitch.tv/kraken/games/top")
+    return toplist.text
