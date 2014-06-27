@@ -1,5 +1,6 @@
 *.pyc
 .DS_Store
+app/.DS_Store
 # Distribution / packaging
 .Python
 env/

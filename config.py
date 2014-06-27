@@ -1,6 +1,7 @@
 #statement for enabling the development environment
 DEBUG = True
 
+#THIS IS SECRET!!
 SECRET_KEY = 'super-secret-password'
 
 #Steam API key
