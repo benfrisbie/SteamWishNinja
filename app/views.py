@@ -4,7 +4,7 @@
 # Each python function in here will map to 1 or more request URLs.
 # *************************************************************************
 
-import re, requests, urllib2, urllib, json
+import re, requests, json
 from urllib import urlencode, quote
 from flask import render_template, redirect, flash, url_for, g, session, jsonify
 from app import app, oid, db
@@ -47,9 +47,13 @@ def get_steam_userinfo(steam_id):
         'key': app.config['STEAM_API_KEY'],
         'steamids': steam_id
     }
+    # url = 'http://api.steampowered.com/ISteamUser/' \
+    #       'GetPlayerSummaries/v0001/?%s' % urllib.urlencode(options)
+    # rv = json.load(urllib2.urlopen(url))
+
     url = 'http://api.steampowered.com/ISteamUser/' \
-          'GetPlayerSummaries/v0001/?%s' % urllib.urlencode(options)
-    rv = json.load(urllib2.urlopen(url))
+          'GetPlayerSummaries/v0001/?'
+    rv = requests.get(url, params=options).json()
     return rv['response']['players']['player'][0] or {}
 
 # Logs the current user out
