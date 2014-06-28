@@ -6,4 +6,13 @@
     <h1>Hello world!</h1>
     <a href="{{ url_for('login') }}"><button type="button">Sign in with Steam</button></a>
   </body>
-</html> 
+  <footer>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+
+      $.getJSON('/topgames', function(data){
+        console.log(data.top[0].game.name);
+      });
+    </script>
+  </footer>
+</html>

@@ -26,7 +26,7 @@ def login():
 def create_or_login(resp):
     return 'You signed in!'
 
-
+# Simply gets the top games on Twitch.TV
 @app.route('/topgames')
 def topgames():
     toplist=requests.get("https://api.twitch.tv/kraken/games/top")
