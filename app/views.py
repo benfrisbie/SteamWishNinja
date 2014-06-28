@@ -4,7 +4,7 @@
 # Each python function in here will map to 1 or more request URLs.
 # *************************************************************************
 
-import re
+import re, requests
 from flask import render_template, redirect, flash, url_for, g, session, jsonify
 from app import app, oid, db
 from models import User
