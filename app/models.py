@@ -21,12 +21,6 @@ class User(db.Model):
             db.session.add(rv)
         return rv
 
-    #Check to see if user is null for templating
-    def is_null(self):
-        if self is None:
-            return True
-        return False
-
     #How User is printed, for debugging
     def __repr__(self):
         return '<User #%d, Steam ID: %s, Nickname: %s>' %(self.id , self.steam_id , self.nickname)
