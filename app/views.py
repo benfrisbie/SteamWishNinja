@@ -4,7 +4,8 @@
 # Each python function in here will map to 1 or more request URLs.
 # *************************************************************************
 
-import re, requests
+import re, requests, urllib2, urllib, json
+from urllib import urlencode, quote
 from flask import render_template, redirect, flash, url_for, g, session, jsonify
 from app import app, oid, db
 from models import User
@@ -26,17 +27,30 @@ def login():
         return redirect(oid.get_next_url())
     return oid.try_login('http://steamcommunity.com/openid')
 
+
 # Called after a login
 @oid.after_login
 def create_or_login(resp):
     _steam_id_re = re.compile('steamcommunity.com/openid/id/(.*?)$')
     match = _steam_id_re.search(resp.identity_url)
     g.user = User.get_or_create(match.group(1))
-    g.user.nickname = 'nickname'
+    steamdata = get_steam_userinfo(g.user.steam_id)
+    g.user.nickname = steamdata['personaname']
     db.session.commit()
     session['user_id'] = g.user.id
     flash('You are logged in as %s, id: %s' %(g.user.nickname, g.user.steam_id) )
     return redirect(url_for('index'))
+
+#testing this
+def get_steam_userinfo(steam_id):
+    options = {
+        'key': app.config['STEAM_API_KEY'],
+        'steamids': steam_id
+    }
+    url = 'http://api.steampowered.com/ISteamUser/' \
+          'GetPlayerSummaries/v0001/?%s' % urllib.urlencode(options)
+    rv = json.load(urllib2.urlopen(url))
+    return rv['response']['players']['player'][0] or {}
 
 # Logs the current user out
 @app.route('/logout')

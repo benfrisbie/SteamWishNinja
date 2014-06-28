@@ -20,7 +20,7 @@ class User(db.Model):
             rv.steam_id = steam_id
             db.session.add(rv)
         return rv
-    
+
     #Check to see if user is null for templating
     def is_null(self):
         if self is None:
