@@ -22,3 +22,6 @@ Some links that may be helpful during development.
 ####Requirements.txt####
 - pip install -r requirements.txt : to install
 - pip freeze > requirements.txt : to update requirements.txt
+
+####Potato Knishes####
+- http://www.youtube.com/watch?v=IFfLCuHSZ-U
