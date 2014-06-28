@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>{{ user.nickname }}'s Profile</title>
+  </head>
+  <body>
+    <h1>{{ user.nickname }}'s Profile</h1>
+    SteamID = {{ user.steam_id }}
+    
+    <br>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }} </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </body>
+  <footer>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+
+      $.getJSON('/topgames', function(data){
+        console.log(data.top[0].game.name);
+      });
+    </script>
+  </footer>
+</html>

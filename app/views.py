@@ -38,7 +38,19 @@ def create_or_login(resp):
     db.session.commit()
     session['user_id'] = g.user.id
     flash('You logged in as %s, id: %s' %(g.user.nickname, g.user.steam_id) )
-    return redirect(url_for('index'))
+    return redirect(url_for('user', steam_id = g.user.steam_id))
+
+
+# user profile page
+@app.route('/user/<steam_id>')
+def user(steam_id):
+    user = User.query.filter_by(steam_id = steam_id).first()
+    if user == None:
+        flash('User with SteamID: ' + steam_id + ' not found.')
+        return redirect(url_for('index'))
+    
+    return render_template('user.html', user = user)
+
 
 # Logs the current user out
 @app.route('/logout')
