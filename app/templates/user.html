@@ -5,8 +5,14 @@
 </head>
 <body>
     <h1>{{ user.nickname }}'s Profile</h1>
-    SteamID = {{ user.steam_id }}
 
+    SteamID = {{ user.steam_id }} <br>
+    <img src="{{user.avatar}}" /> <br>
+    {% if g.user == None %}
+    	<a href="{{ url_for('login') }}"><button type="button">Sign in with Steam</button></a>
+    {% else %}
+    	<a href="{{ url_for('logout') }}"><button type="button">Logout</button></a>
+    {% endif %}
     <br>
     {% with messages = get_flashed_messages() %}
     {% if messages %}

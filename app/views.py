@@ -6,7 +6,7 @@
 
 import re, requests, json, steam_requests, twitch_requests
 from flask import render_template, redirect, flash, url_for, g, session, jsonify
-from app import app, oid, db
+from app import app, oid, db, models
 from models import User
 
 
@@ -16,6 +16,11 @@ from models import User
 @app.route('/index')
 def index():
     return render_template('index.html', title = 'Home')
+
+# @app.route('/userlist')
+# def userlist():
+#     allusers = models.User.query.all()
+#     return jsonify(alluser)
 
 
 # Log in a user using Steam OpenID
@@ -35,6 +40,7 @@ def create_or_login(resp):
     g.user = User.get_or_create(match.group(1))
     steamdata = steam_requests.get_steam_userinfo(g.user.steam_id)
     g.user.nickname = steamdata['personaname']
+    g.user.avatar = steamdata['avatarfull']
     db.session.commit()
     session['user_id'] = g.user.id
     flash('You logged in as %s, id: %s' %(g.user.nickname, g.user.steam_id) )
@@ -48,7 +54,7 @@ def user(steam_id):
     if user == None:
         flash('User with SteamID: ' + steam_id + ' not found.')
         return redirect(url_for('index'))
-    
+
     return render_template('user.html', user = user)
 
 
