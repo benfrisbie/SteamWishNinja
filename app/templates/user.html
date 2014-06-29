@@ -1,11 +1,12 @@
 <html>
-  <head>
-    <title>{{ user.nickname }}'s Profile</title>
-  </head>
-  <body>
+<head>
+  <title>{{ user.nickname }}'s Profile</title>
+
+</head>
+<body>
     <h1>{{ user.nickname }}'s Profile</h1>
     SteamID = {{ user.steam_id }}
-    
+
     <br>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -17,9 +18,11 @@
     {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}
-  </body>
+</body>
   <footer>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script>
 
       $.getJSON('/topgames', function(data){

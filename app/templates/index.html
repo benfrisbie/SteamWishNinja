@@ -1,10 +1,13 @@
 <html>
   <head>
     <title>{{title}} - Potato Knishes</title>
+    <div>
+      <p>
+    </div>
   </head>
   <body>
     <h1>Hello world!</h1>
-    
+
     {% if g.user == None %}
     	<a href="{{ url_for('login') }}"><button type="button">Sign in with Steam</button></a>
     {% else %}
@@ -13,7 +16,7 @@
     	SteamID: {{g.user.steam_id}} <br>
     	<a href="{{ url_for('logout') }}"><button type="button">Logout</button></a>
     {% endif %}
-    	
+
     <br>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -28,6 +31,7 @@
   </body>
   <footer>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
     <script>
 
       $.getJSON('/topgames', function(data){
