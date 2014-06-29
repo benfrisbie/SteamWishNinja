@@ -8,8 +8,9 @@ from app import db
 #Model for our users
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    steam_id = db.Column(db.String(40))
-    nickname = db.Column(db.String(80))
+    steam_id = db.Column(db.String(33))
+    nickname = db.Column(db.String(33))
+    avatar = db.Column(db.String(4000))
 
     #Gets a user, if they dont exist create them
     @staticmethod

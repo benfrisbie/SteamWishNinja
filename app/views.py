@@ -35,6 +35,7 @@ def create_or_login(resp):
     g.user = User.get_or_create(match.group(1))
     steamdata = steam_requests.get_steam_userinfo(g.user.steam_id)
     g.user.nickname = steamdata['personaname']
+    g.user.avatar = steamdata['avatarfull']
     db.session.commit()
     session['user_id'] = g.user.id
     flash('You logged in as %s, id: %s' %(g.user.nickname, g.user.steam_id) )
