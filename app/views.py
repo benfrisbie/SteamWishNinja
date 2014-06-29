@@ -33,7 +33,7 @@ def create_or_login(resp):
     _steam_id_re = re.compile('steamcommunity.com/openid/id/(.*?)$')
     match = _steam_id_re.search(resp.identity_url)
     g.user = User.get_or_create(match.group(1))
-    steamdata = steam_requests.get_steam_userinfo(g.user.steam_id)
+    steamdata = steam_requests.userinfo(g.user.steam_id)
     g.user.nickname = steamdata['personaname']
     g.user.avatar = steamdata['avatarfull']
     db.session.commit()
@@ -49,8 +49,13 @@ def user(steam_id):
     if user == None:
         flash('User with SteamID: ' + steam_id + ' not found.')
         return redirect(url_for('index'))
-    
     return render_template('user.html', user = user)
+
+
+# wishlist test
+@app.route('/wishlist')
+def wishlist():
+    return steam_requests.userwishlist(g.user.steam_id)
 
 
 # Logs the current user out
