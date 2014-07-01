@@ -4,6 +4,7 @@
 # *******************************************************************************
 
 import requests, json
+from bs4 import BeautifulSoup
 from config import STEAM_API_KEY
 from flask import jsonify
 
@@ -22,4 +23,7 @@ def userinfo(steam_id):
 def userwishlist(steam_id):
     url = 'http://steamcommunity.com/profiles/%s/wishlist/' %steam_id
     rv = requests.get(url)
-    return json.dumps(rv.text)
+    soup=BeautifulSoup(rv.text)
+    h4=soup.find_all('h4')
+    # return json.dumps(h4)
+    return json.dumps(["games" , h4])
