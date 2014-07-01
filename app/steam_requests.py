@@ -13,7 +13,7 @@ def userinfo(steam_id):
         'key': STEAM_API_KEY,
         'steamids': steam_id
     }
-    
+
     url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0001/?'
     rv = requests.get(url, params=options).json()
     return rv['response']['players']['player'][0] or {}
@@ -22,4 +22,4 @@ def userinfo(steam_id):
 def userwishlist(steam_id):
     url = 'http://steamcommunity.com/profiles/%s/wishlist/' %steam_id
     rv = requests.get(url)
-    return jsonify(rv.json())
+    return json.dumps(rv.text)
