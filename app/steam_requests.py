@@ -25,5 +25,7 @@ def userwishlist(steam_id):
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
     h4=soup.find_all('h4')
-    # return json.dumps(h4)
-    return json.dumps(["games" , h4])
+    games = {}
+    for i in range(len(h4)):
+      games['game' + str(i)] = str(h4[i])
+    return json.dumps(games)
