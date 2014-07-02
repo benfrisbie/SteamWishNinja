@@ -1,24 +1,9 @@
-<html>
-  <head>
-    <title>{{title}}</title>
-    <div>
-      <p>
-    </div>
-  </head>
-  <body>
-    {% if g.user == None %}
-    	<a href="{{ url_for('login') }}"><button type="button">Sign in with Steam</button></a>
-    {% else %}
-    	<a href="{{ url_for('logout') }}"><button type="button">Logout</button></a>
-    {% endif %}
+{% extends "base.html" %}
+{% block content %}
 
     <h1>Home</h1>
 
-    {% if g.user != None %}
-      Signed in as -> <br>
-      Nickname: {{g.user.nickname}} <br>
-      SteamID: {{g.user.steam_id}} <br>
-    {% endif %}
+    This website will help you decide if you should buy and when to buy games on your steam wishlist.
 
     <br>
     {% with messages = get_flashed_messages() %}
@@ -30,20 +15,5 @@
     </ul>
     {% endif %}
     {% endwith %}
-    {% block content %}{% endblock %}
-  </body>
-  <footer>
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/main.css">
-    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <script>
 
-      $.getJSON('/topgames', function(data){
-        console.log(data.top[0].game.name);
-      });
-      $.getJSON('/wishlist', function(data){
-        console.log(data[0]);
-      });
-    </script>
-  </footer>
-</html>
+{% endblock %}

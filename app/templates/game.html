@@ -1,14 +1,5 @@
-<html>
-<head>
-  <title>{{ game_name }}</title>
-
-</head>
-<body>
-    {% if g.user == None %}
-        <a href="{{ url_for('login') }}"><button type="button">Sign in with Steam</button></a>
-    {% else %}
-        <a href="{{ url_for('logout') }}"><button type="button">Logout</button></a>
-    {% endif %}
+{% extends "base.html" %}
+{% block content %}
 
     <h1>{{ game_name }}</h1>
 
@@ -21,17 +12,5 @@
     </ul>
     {% endif %}
     {% endwith %}
-    {% block content %}{% endblock %}
-</body>
-  <footer>
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/main.css">
-    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <script>
 
-      $.getJSON('/topgames', function(data){
-        console.log(data.top[0].game.name);
-      });
-    </script>
-  </footer>
-</html>
+{% endblock %}
