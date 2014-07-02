@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>{{ user.nickname }}'s Profile</title>
+  <title>{{ game_name }}</title>
 
 </head>
 <body>
@@ -10,16 +10,7 @@
         <a href="{{ url_for('logout') }}"><button type="button">Logout</button></a>
     {% endif %}
 
-    <h1>{{ user.nickname }}'s Profile</h1>
-    SteamID = {{ user.steam_id }} <br>
-    <img src="{{user.avatar}}" /> <br>
- 
-    Wishlist:
-    <ul>
-    {% for gameName in wishlist %}
-        <li><a href="{{ url_for('game', game_name = gameName) }}">{{gameName}}</a></li>
-    {% endfor %}
-    </ul>
+    <h1>{{ game_name }}</h1>
 
     {% with messages = get_flashed_messages() %}
     {% if messages %}

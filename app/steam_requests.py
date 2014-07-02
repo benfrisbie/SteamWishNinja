@@ -30,4 +30,4 @@ def userwishlist(steam_id):
     for i in range(len(h4)):
       games['game'] = str(h4[i]).strip('<h4></h4>')
       setOfGames.append(games['game'])
-    return json.dumps(setOfGames)
+    return setOfGames

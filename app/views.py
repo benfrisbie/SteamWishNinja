@@ -17,11 +17,6 @@ from models import User
 def index():
     return render_template('index.html', title = 'Home')
 
-# @app.route('/userlist')
-# def userlist():
-#     allusers = models.User.query.all()
-#     return jsonify(alluser)
-
 
 # Log in a user using Steam OpenID
 @app.route('/login')
@@ -47,20 +42,12 @@ def create_or_login(resp):
     return redirect(url_for('user', steam_id = g.user.steam_id))
 
 
-# user profile page
-@app.route('/user/<steam_id>')
-def user(steam_id):
-    user = User.query.filter_by(steam_id = steam_id).first()
-    if user == None:
-        flash('User with SteamID: ' + steam_id + ' not found.')
-        return redirect(url_for('index'))
-    return render_template('user.html', user = user)
-
-
-# wishlist test
-@app.route('/wishlist')
-def wishlist():
-    return steam_requests.userwishlist(g.user.steam_id)
+# Called before every request to pull in current user
+@app.before_request
+def before_request():
+    g.user = None
+    if 'user_id' in session:
+        g.user = User.query.get(session['user_id'])
 
 
 # Logs the current user out
@@ -70,9 +57,32 @@ def logout():
     flash('You logged out')
     return redirect(url_for('index'))
 
-# Called before every request to pull in current user
-@app.before_request
-def before_request():
-    g.user = None
-    if 'user_id' in session:
-        g.user = User.query.get(session['user_id'])
+
+# user profile page
+@app.route('/user/<steam_id>')
+def user(steam_id):
+    user = User.query.filter_by(steam_id = steam_id).first()
+    if user == None:
+        flash('User with SteamID: ' + steam_id + ' not found.')
+        return redirect(url_for('index'))
+
+    wishlist = steam_requests.userwishlist(g.user.steam_id)
+    return render_template('user.html', user = user, wishlist = wishlist)
+
+
+# Page for a game and all the info on it
+@app.route('/game/<game_name>')
+def game(game_name):
+    return render_template('game.html', game_name = game_name)
+
+
+# Page for the top games on Twitch
+@app.route('/topgamesontwitch')
+def topgamesontwitch():
+    return twitch_requests.topgames()
+
+
+# @app.route('/userlist')
+# def userlist():
+#     allusers = models.User.query.all()
+#     return jsonify(alluser)

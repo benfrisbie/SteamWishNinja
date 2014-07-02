@@ -1,20 +1,23 @@
 <html>
   <head>
-    <title>{{title}} - Potato Knishes</title>
+    <title>{{title}}</title>
     <div>
       <p>
     </div>
   </head>
   <body>
-    <h1>Hello world!</h1>
-
     {% if g.user == None %}
     	<a href="{{ url_for('login') }}"><button type="button">Sign in with Steam</button></a>
     {% else %}
-    	Signed in -> <br>
-    	Nickname: {{g.user.nickname}} <br>
-    	SteamID: {{g.user.steam_id}} <br>
     	<a href="{{ url_for('logout') }}"><button type="button">Logout</button></a>
+    {% endif %}
+
+    <h1>Home</h1>
+
+    {% if g.user != None %}
+      Signed in as -> <br>
+      Nickname: {{g.user.nickname}} <br>
+      SteamID: {{g.user.steam_id}} <br>
     {% endif %}
 
     <br>
@@ -32,6 +35,7 @@
   <footer>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script>
 
       $.getJSON('/topgames', function(data){
