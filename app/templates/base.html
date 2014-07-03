@@ -8,6 +8,7 @@
 {% if g.user == None %}
   <a href="{{ url_for('login') }}"><button type="button">Sign in with Steam</button></a>
 {% else %}
+  <a href="{{ url_for('user', steam_id = g.user.steam_id) }}"><button type="button">{{g.user.nickname}}'s Profile</button></a>
   <a href="{{ url_for('logout') }}"><button type="button">Logout</button></a>
 {% endif %}
 
