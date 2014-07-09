@@ -33,8 +33,9 @@ def userwishlist(steam_id):
     return setOfGames
 
 # Get a games image
-def getgameimage(game_name):
-    url = 'http://steamcommunity.com/app/6060'
+def getgameimage(gameId):
+    url = 'http://steamcommunity.com/app/%d' %gameId
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
-    return soup.text
+    image = soup.find('img', {'class':'apphub_StoreAppLogo'})['src']
+    return image

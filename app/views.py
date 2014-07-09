@@ -73,7 +73,11 @@ def user(nickname):
 # Page for a game and all the info on it
 @app.route('/game/<game_name>')
 def game(game_name):
-    return render_template('game.html', game_name = game_name)
+    # Get the gameId on steam here
+    gameId = 6060
+    image = steam_requests.getgameimage(gameId)
+
+    return render_template('game.html', game_name = game_name, image = image)
 
 
 # Page for the top games on Twitch
@@ -81,10 +85,6 @@ def game(game_name):
 def topgamesontwitch():
     return twitch_requests.topgames()
 
-# Game image test
-@app.route('/gameimage')
-def gameimage():
-    return steam_requests.getgameimage('abc')
 
 # @app.route('/userlist')
 # def userlist():
