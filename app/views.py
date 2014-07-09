@@ -66,7 +66,7 @@ def user(nickname):
         flash('User with SteamID: ' + nickname + ' not found.')
         return redirect(url_for('index'))
 
-    wishlist = steam_requests.userwishlist(g.user.steam_id)
+    wishlist = steam_requests.userwishlist(user.steam_id)
     return render_template('user.html', user = user, wishlist = wishlist)
 
 
@@ -81,6 +81,10 @@ def game(game_name):
 def topgamesontwitch():
     return twitch_requests.topgames()
 
+# Game image test
+@app.route('/gameimage')
+def gameimage():
+    return steam_requests.getgameimage('abc')
 
 # @app.route('/userlist')
 # def userlist():

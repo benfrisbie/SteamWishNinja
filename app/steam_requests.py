@@ -31,3 +31,10 @@ def userwishlist(steam_id):
       games['game'] = str(h4[i]).strip('<h4></h4>')
       setOfGames.append(games['game'])
     return setOfGames
+
+# Get a games image
+def getgameimage(game_name):
+    url = 'http://steamcommunity.com/app/6060'
+    rv = requests.get(url)
+    soup=BeautifulSoup(rv.text)
+    return soup.text
