@@ -14,6 +14,7 @@ def topgames():
 
 # Search twitch for a specific game
 def searchgame(game):
-	url = 'https://api.twitch.tv/kraken/search/games/?q=%s&type=suggest' %game
-	game = requests.get(url).json()
-	return game
+    url = 'https://api.twitch.tv/kraken/search/games/?q=%s' %game
+    gameSearch = requests.get(url).json()
+    # gameSearch['streams'][0]['preview']['small']
+    return gameSearch

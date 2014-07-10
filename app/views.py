@@ -76,7 +76,8 @@ def game(game_name):
     # Get the gameId on steam here
     gameId = 6060
     image = steam_requests.getgameimage(gameId)
-
+    gameStreams = twitch_requests.searchgame(game_name) # need to return an embeded url to display as test
+    
     return render_template('game.html', game_name = game_name, image = image)
 
 
