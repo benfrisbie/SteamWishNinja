@@ -27,16 +27,15 @@
 
 <footer>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="/static/main.css">
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script>
-
-      $.getJSON('/topgames', function(data){
+      console.log("nignog");
+      $.getJSON('/topgamesontwitch', function(data){
         console.log(data.top[0].game.name);
       });
-      $.getJSON('/wishlist', function(data){
-        console.log(data[0]);
-      });
+
     </script>
   </footer>
 

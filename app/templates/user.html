@@ -1,15 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <h1>{{ user.nickname }}'s Profile</h1>
-    SteamID = {{ user.steam_id }} <br>
-    <img src="{{user.avatar}}" /> <br>
- 
-    Wishlist:
-    <ul>
-    {% for gameName in wishlist %}
-        <li><a href="{{ url_for('game', game_name = gameName) }}">{{gameName}}</a></li>
-    {% endfor %}
-    </ul>
+
+
+    <div class="row">
+      <div class="col-md-6">
+        <p class="row"><h1>{{ user.nickname }}'s Profile</h1> <h5>SteamID = {{ user.steam_id }}</h5></p>
+        <div class="col-md-4">
+          <br><img src="{{user.avatar}}" /> <br>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <h2>Wishlist:</h2>
+        <ul>
+        {% for gameName in wishlist %}
+            <li><a href="{{ url_for('game', game_name = gameName) }}">{{gameName}}</a></li>
+        {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-2">
+        <!-- <p>test</p> -->
+      </div>
+    </div>
+
+
 
 {% endblock %}
