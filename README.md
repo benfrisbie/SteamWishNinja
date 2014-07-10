@@ -17,6 +17,7 @@ Some links that may be helpful during development.
 ####Twitch####
 - http://dev.twitch.tv/
 - Self describing API use: https://api.twitch.tv/kraken to discover most of the possible calls
+- https://api.twitch.tv/kraken/search/streams?q=<gamenamehere>
 
 
 ####Requirements.txt####
