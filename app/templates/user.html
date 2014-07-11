@@ -13,8 +13,8 @@
       <div class="col-md-4">
         <h2>Wishlist:</h2>
         <ul>
-        {% for gameName in wishlist %}
-            <li><a href="{{ url_for('game', game_name = gameName) }}">{{gameName}}</a></li>
+        {% for gameId in wishlist %}
+            <li><a href="{{ url_for('game', game_id = gameId) }}">{{gameId}}</a></li>
         {% endfor %}
         </ul>
       </div>
