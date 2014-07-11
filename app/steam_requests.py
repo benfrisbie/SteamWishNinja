@@ -24,13 +24,10 @@ def userwishlist(steam_id):
     url = 'http://steamcommunity.com/profiles/%s/wishlist/' %steam_id
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
-    h4=soup.find_all('h4')
-    setOfGames = []
-    games = {}
-    for i in range(len(h4)):
-      games['game'] = str(h4[i]).strip('<h4></h4>')
-      setOfGames.append(games['game'])
-    return setOfGames
+    games =[]
+    for game in soup.find_all('div', {'class':'wishlistRow'}):
+        games.append(int(game.get('id').strip('game_')))
+    return games
 
 # Get a games image
 def getgameimage(gameId):
@@ -39,3 +36,10 @@ def getgameimage(gameId):
     soup=BeautifulSoup(rv.text)
     image = soup.find('img', {'class':'apphub_StoreAppLogo'})['src']
     return image
+
+def getgamename(gameId):
+    url = 'http://steamcommunity.com/app/%d' %gameId
+    rv = requests.get(url)
+    soup=BeautifulSoup(rv.text)
+    name = soup.find('div', {'class':'apphub_AppName'}).text
+    return name

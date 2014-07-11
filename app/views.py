@@ -67,18 +67,19 @@ def user(nickname):
         return redirect(url_for('index'))
 
     wishlist = steam_requests.userwishlist(user.steam_id)
+
     return render_template('user.html', user = user, wishlist = wishlist)
 
 
 # Page for a game and all the info on it
-@app.route('/game/<game_name>')
-def game(game_name):
+@app.route('/game/<game_id>')
+def game(game_id):
     # Get the gameId on steam here
-    gameId = 6060
-    image = steam_requests.getgameimage(gameId)
+    game_name = steam_requests.getgamename(int(game_id))
+    game_image = steam_requests.getgameimage(int(game_id))
     gameStreams = twitch_requests.searchgame(game_name) # need to return an embeded url to display as test
-    
-    return render_template('game.html', game_name = game_name, image = image)
+
+    return render_template('game.html', game_name = game_name, game_image = game_image)
 
 
 # Page for the top games on Twitch
