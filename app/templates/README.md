@@ -1,7 +1,7 @@
 Templates
 ==============
 
-When adding to these pages make sure to follow in terms of style, usage, and naming conventions.
+When adding to these templates make sure to follow in terms of style, usage, and naming conventions.
 
 Try not to add deprecated or obscure libraries.
 
