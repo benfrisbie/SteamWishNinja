@@ -7,7 +7,7 @@
 import re, requests, json, steam_requests, twitch_requests
 from flask import render_template, redirect, flash, url_for, g, session, jsonify
 from app import app, oid, db, models
-from models import User
+from models import User, Game
 
 
 # The first page/home that will be displayed first
@@ -33,7 +33,7 @@ def create_or_login(resp):
     _steam_id_re = re.compile('steamcommunity.com/openid/id/(.*?)$')
     match = _steam_id_re.search(resp.identity_url)
     g.user = User.get_or_create(match.group(1))
-    steamdata = steam_requests.userinfo(g.user.steam_id)
+    steamdata = steam_requests.user_info(g.user.steam_id)
     g.user.nickname = steamdata['personaname']
     g.user.avatar = steamdata['avatarfull']
     db.session.commit()
@@ -66,20 +66,26 @@ def user(nickname):
         flash('User with SteamID: ' + nickname + ' not found.')
         return redirect(url_for('index'))
 
-    wishlist = steam_requests.userwishlist(user.steam_id)
+    wishlist_ids = steam_requests.user_wishlist(user.steam_id)
+
+    wishlist = []
+    for app_id in wishlist_ids:
+        game = Game.get_or_create(app_id)
+        wishlist.append(game)
+
+    db.session.commit()
 
     return render_template('user.html', user = user, wishlist = wishlist)
 
 
 # Page for a game and all the info on it
-@app.route('/game/<game_id>')
-def game(game_id):
+@app.route('/game/<steam_app_id>')
+def game(steam_app_id):
     # Get the gameId on steam here
-    game_name = steam_requests.getgamename(int(game_id))
-    game_image = steam_requests.getgameimage(int(game_id))
-    gameStreams = twitch_requests.searchgame(game_name) # need to return an embeded url to display as test
+    game = Game.query.filter_by(steam_app_id = steam_app_id).first()
+    game_streams = twitch_requests.searchgame(game.name) # need to return an embeded url to display as test
 
-    return render_template('game.html', game_name = game_name, game_image = game_image, gameStreams = gameStreams)
+    return render_template('game.html', game = game, game_streams = game_streams)
 
 
 # Page for the top games on Twitch
@@ -88,7 +94,8 @@ def topgamesontwitch():
     return twitch_requests.topgames()
 
 
-# @app.route('/userlist')
-# def userlist():
-#     allusers = models.User.query.all()
-#     return jsonify(alluser)
+# Returns a list of all the users in our db
+@app.route('/userlist')
+def userlist():
+    users = models.User.query.all()
+    return users

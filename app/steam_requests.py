@@ -9,7 +9,7 @@ from config import STEAM_API_KEY
 from flask import jsonify
 
 # Get a steam users info
-def userinfo(steam_id):
+def user_info(steam_id):
     options = {
         'key': STEAM_API_KEY,
         'steamids': steam_id
@@ -20,7 +20,7 @@ def userinfo(steam_id):
     return rv['response']['players']['player'][0] or {}
 
 # Get a steam users wishlist
-def userwishlist(steam_id):
+def user_wishlist(steam_id):
     url = 'http://steamcommunity.com/profiles/%s/wishlist/' %steam_id
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
@@ -29,17 +29,33 @@ def userwishlist(steam_id):
         games.append(int(game.get('id').strip('game_')))
     return games
 
-# Get a games image
-def getgameimage(gameId):
-    url = 'http://steamcommunity.com/app/%d' %gameId
+# Gets a game image from a steam app id
+def game_image(steam_app_id):
+    url = 'http://steamcommunity.com/app/%d' %steam_app_id
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
     image = soup.find('img', {'class':'apphub_StoreAppLogo'})['src']
     return image
 
-def getgamename(gameId):
-    url = 'http://steamcommunity.com/app/%d' %gameId
+# Gets a game name from a steam app id
+def game_name(steam_app_id):
+    url = 'http://steamcommunity.com/app/%d' %steam_app_id
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
     name = soup.find('div', {'class':'apphub_AppName'}).text
     return name
+
+# Gets news for a game on steam from a steam app id
+def game_news(steam_app_id):
+    options = {
+        'key': STEAM_API_KEY,
+        'appid': steam_app_id,
+        'count': 3,
+        'maxLength': 4000
+    }
+
+    url = 'http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?'
+    rv = requests.get(url, params=options).json()
+
+    #we need to return something here
+    return 'nothing being returned yet'

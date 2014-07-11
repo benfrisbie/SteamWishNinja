@@ -13,8 +13,8 @@
       <div class="col-md-4">
         <h2>Wishlist:</h2>
         <ul>
-        {% for gameId in wishlist %}
-            <li><a href="{{ url_for('game', game_id = gameId) }}">{{gameId}}</a></li>
+        {% for game in wishlist %}
+            <li><a href="{{ url_for('game', steam_app_id = game.steam_app_id) }}">{{game.name}}</a></li>
         {% endfor %}
         </ul>
       </div>

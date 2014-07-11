@@ -2,18 +2,18 @@
 {% block content %}
     <div class="row">
       <div class="col-md-6">
-        <h1>{{ game_name }}</h1>
+        <h1>{{ game.name }}</h1>
         <div class="col-md-4">
-          <img src={{game_image}}>
+          <img src={{game.image}}>
         </div>
       </div>
       <div class="col-md-4">
 
 
         
-        <object type="application/x-shockwave-flash" height="378" width="620" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{gameStreams}}" bgcolor="#000000"><param name="allowFullScreen" value="true" />
+        <object type="application/x-shockwave-flash" height="378" width="620" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{game_streams}}" bgcolor="#000000"><param name="allowFullScreen" value="true" />
         <param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" />
-        <param name="flashvars" value="hostname=www.twitch.tv&channel={{gameStreams}}&auto_play=true&start_volume=25" /></object>
+        <param name="flashvars" value="hostname=www.twitch.tv&channel={{game_streams}}&auto_play=true&start_volume=25" /></object>
       </div>
       <div class="col-sm-2">
         <!-- <p>test</p> -->
