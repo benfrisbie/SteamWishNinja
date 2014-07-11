@@ -79,7 +79,7 @@ def game(game_id):
     game_image = steam_requests.getgameimage(int(game_id))
     gameStreams = twitch_requests.searchgame(game_name) # need to return an embeded url to display as test
 
-    return render_template('game.html', game_name = game_name, game_image = game_image)
+    return render_template('game.html', game_name = game_name, game_image = game_image, gameStreams = gameStreams)
 
 
 # Page for the top games on Twitch
