@@ -14,7 +14,10 @@
         <h2>Wishlist:</h2>
         <ul>
         {% for game in wishlist %}
-            <li><a href="{{ url_for('game', steam_app_id = game.steam_app_id) }}">{{game.name}}</a></li>
+            <li>
+              <a href="{{ url_for('game', steam_app_id = game.steam_app_id) }}"> {{game.name}} </a>
+              <a href="{{ url_for('game', steam_app_id = game.steam_app_id) }}"> <img src="{{game.image}}" height="100" width="200"> </a> 
+            </li>
         {% endfor %}
         </ul>
       </div>
