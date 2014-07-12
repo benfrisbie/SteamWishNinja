@@ -98,4 +98,4 @@ def topgamesontwitch():
 @app.route('/userlist')
 def userlist():
     users = models.User.query.all()
-    return users
+    return render_template('users.html', users = users)
