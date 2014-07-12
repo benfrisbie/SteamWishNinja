@@ -22,7 +22,7 @@
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               {% if g.user == None %}
-                <li><a href="{{ url_for('login') }}">Sign in with Steam</a></li>
+                <li><a href="{{ url_for('login') }}"><img src="/static/sits_large_border.png" width="118" height="51" border="0"></img></a></li>
               {% else %}
                 <li><a href="{{ url_for('user', nickname = g.user.nickname) }}">{{g.user.nickname}}'s Profile</a></li>
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
