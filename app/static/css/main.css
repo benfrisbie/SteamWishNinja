@@ -1,6 +1,18 @@
+html, body {
+    height: 100%;
+}
 head{
   background: #7f8c8d;
 }
 #fake-header{
   margin-bottom:45px;
+}
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -142px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer, .push {
+    height: 10px; /* .push must be the same height as .footer */
 }
