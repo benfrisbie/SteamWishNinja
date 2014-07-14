@@ -14,8 +14,13 @@ def topgames():
 
 # Search twitch for a specific game
 def searchgame(game):
-    url = 'https://api.twitch.tv/kraken/search/streams/?q=%s' %game
-    gameSearch = requests.get(url).json()
+    params = {
+        'game': game,
+        'limit': 1
+    }
+
+    url = 'https://api.twitch.tv/kraken/streams/?'
+    gameSearch = requests.get(url, params=params).json()
     if(gameSearch['_total'] == 0):
     	channel=""
     elif(gameSearch['streams'] == 0):

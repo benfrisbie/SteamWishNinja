@@ -10,13 +10,13 @@ from flask import jsonify
 
 # Get a steam users info
 def user_info(steam_id):
-    options = {
+    params = {
         'key': STEAM_API_KEY,
         'steamids': steam_id
     }
 
     url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0001/?'
-    rv = requests.get(url, params=options).json()
+    rv = requests.get(url, params=params).json()
     return rv['response']['players']['player'][0] or {}
 
 # Get a steam users wishlist
@@ -47,7 +47,7 @@ def game_name(steam_app_id):
 
 # Gets news for a game on steam from a steam app id
 def game_news(steam_app_id):
-    options = {
+    params = {
         'key': STEAM_API_KEY,
         'appid': steam_app_id,
         'count': 3,
@@ -55,7 +55,7 @@ def game_news(steam_app_id):
     }
 
     url = 'http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?'
-    rv = requests.get(url, params=options).json()
+    rv = requests.get(url, params=params).json()
 
     #we need to return something here
     return 'nothing being returned yet'
