@@ -7,12 +7,19 @@ head{
 #fake-header{
   margin-bottom:45px;
 }
-.wrapper {
+/*.wrapper {
     min-height: 100%;
     height: auto !important;
     height: 100%;
-    margin: 0 auto -142px; /* the bottom margin is the negative value of the footer's height */
-}
+    margin: 0 auto -142px;
 .footer, .push {
-    height: 10px; /* .push must be the same height as .footer */
+    height: 10px;
+}*/
+footer {
+  width: 500px;
+  margin: 50px auto;
+  border-top: 1px dotted #ccc;
+  padding-top: 5px;
+  font-size: 13px;
+  text-align: center;
 }
