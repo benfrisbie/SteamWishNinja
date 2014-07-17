@@ -13,7 +13,7 @@ def search_videos(game):
         'part': 'snippet',
         'maxResults': 3,
         'order': 'relevance',
-        'q': game.name,
+        'q': game.name +'video game',
         'type': 'video',
         'videoEmbeddable': True
     }
