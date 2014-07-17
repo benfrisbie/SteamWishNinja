@@ -35,6 +35,7 @@ class Game(db.Model):
     name = db.Column(db.String(4000))
     image = db.Column(db.String(4000))
     steam_url = db.Column(db.String(4000))
+    description = db.Column(db.String(4000))
 
     #Gets a game, if it doesnt exist create it
     @staticmethod
@@ -46,6 +47,7 @@ class Game(db.Model):
             rv.name = steam_requests.game_name(steam_app_id)
             rv.image = steam_requests.game_image(steam_app_id)
             rv.steam_url = 'http://steamcommunity.com/app/%d' %steam_app_id
+            rv.description = steam_requests.game_description(steam_app_id)
             db.session.add(rv)
         return rv
 

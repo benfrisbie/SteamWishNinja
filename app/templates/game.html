@@ -4,8 +4,11 @@
       <div class="col-md-6">
 
         <h1>{{ game.name }}</h1>
+        <a href={{game.steam_url}}> <img src={{game.image}}> </a> <br>
+        <h5>{{game.description}}</h5>
+
         <div class="col-md-4">
-          <a href={{game.steam_url}}> <img src={{game.image}}> </a>
+
 
           <h3>Twitch Stream</h3>
           <object type="application/x-shockwave-flash" height="378" width="620" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{game_streams}}" bgcolor="#000000"><param name="allowFullScreen" value="true" />

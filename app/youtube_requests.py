@@ -6,7 +6,7 @@
 import requests, json
 from config import YOUTUBE_API_KEY
 
-# Get a list of videos pertaining to the search critera
+# Get a list of videoIds pertaining to the game being searched
 def search_videos(game):
     params = {
         'key': YOUTUBE_API_KEY,

@@ -45,6 +45,14 @@ def game_name(steam_app_id):
     name = soup.find('div', {'class':'apphub_AppName'}).text
     return name
 
+# Gets a game description from a steam app id
+def game_description(steam_app_id):
+    url = 'http://steamcommunity.com/app/%d' %steam_app_id
+    rv = requests.get(url)
+    soup=BeautifulSoup(rv.text)
+    description = soup.find('div', {'class':'apphub_StoreAppText'}).text
+    return description
+
 # Gets news for a game on steam from a steam app id
 def game_news(steam_app_id):
     params = {
