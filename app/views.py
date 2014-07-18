@@ -30,10 +30,10 @@ def login():
 # Called after a login
 @oid.after_login
 def create_or_login(resp):
-    _steam_id_re = re.compile('steamcommunity.com/openid/id/(.*?)$')
-    match = _steam_id_re.search(resp.identity_url)
+    steamIdRe = re.compile('steamcommunity.com/openid/id/(.*?)$')
+    match = steamIdRe.search(resp.identity_url)
     g.user = User.get_or_create(match.group(1))
-    steamdata = steam_requests.user_info(g.user.steam_id)
+    steamdata = steam_requests.user_info(g.user.steamId)
     g.user.nickname = steamdata['personaname']
     g.user.avatar = steamdata['avatarfull']
     db.session.commit()
@@ -66,11 +66,11 @@ def user(nickname):
         flash('User with SteamID: ' + nickname + ' not found.')
         return redirect(url_for('index'))
 
-    wishlist_ids = steam_requests.user_wishlist(user.steam_id)
+    wishlistIds = steam_requests.user_wishlist(user.steamId)
 
     wishlist = []
-    for app_id in wishlist_ids:
-        game = Game.get_or_create(app_id)
+    for appId in wishlistIds:
+        game = Game.get_or_create(appId)
         wishlist.append(game)
 
     db.session.commit()
@@ -79,15 +79,15 @@ def user(nickname):
 
 
 # Page for a game and all the info on it
-@app.route('/game/<steam_app_id>')
-def game(steam_app_id):
+@app.route('/game/<steamAppId>')
+def game(steamAppId):
     # Get the gameId on steam here
-    game = Game.query.filter_by(steam_app_id = steam_app_id).first()
-    game_streams = twitch_requests.searchgame(game.name) # need to return an embeded url to display as test
+    game = Game.query.filter_by(steamAppId = steamAppId).first()
+    twitchStream = twitch_requests.searchgame(game.name) # need to return an embeded url to display as test
 
-    yt_videos = youtube_requests.search_videos(game)
+    ytVideos = youtube_requests.search_videos(game)
 
-    return render_template('game.html', game = game, game_streams = game_streams, yt_videos = yt_videos)
+    return render_template('game.html', game = game, twitchStream = twitchStream, ytVideos = ytVideos)
 
 
 # Page for the top games on Twitch

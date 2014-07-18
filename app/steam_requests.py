@@ -9,10 +9,10 @@ from config import STEAM_API_KEY
 from flask import jsonify
 
 # Get a steam users info
-def user_info(steam_id):
+def user_info(steamId):
     params = {
         'key': STEAM_API_KEY,
-        'steamids': steam_id
+        'steamids': steamId
     }
 
     url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0001/?'
@@ -20,8 +20,8 @@ def user_info(steam_id):
     return rv['response']['players']['player'][0] or {}
 
 # Get a steam users wishlist
-def user_wishlist(steam_id):
-    url = 'http://steamcommunity.com/profiles/%s/wishlist/' %steam_id
+def user_wishlist(steamId):
+    url = 'http://steamcommunity.com/profiles/%s/wishlist/' %steamId
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
     games =[]
@@ -29,35 +29,28 @@ def user_wishlist(steam_id):
         games.append(int(game.get('id').strip('game_')))
     return games
 
-# Gets a game image from a steam app id
-def game_image(steam_app_id):
-    url = 'http://steamcommunity.com/app/%d' %steam_app_id
+# Gets a game info from a steam app id
+# Result array format -> [name, image, description]
+def game_info(steamAppId):
+    url = 'http://steamcommunity.com/app/%d' %steamAppId
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
-    image = soup.find('img', {'class':'apphub_StoreAppLogo'})['src']
-    return image
 
-# Gets a game name from a steam app id
-def game_name(steam_app_id):
-    url = 'http://steamcommunity.com/app/%d' %steam_app_id
-    rv = requests.get(url)
-    soup=BeautifulSoup(rv.text)
-    name = soup.find('div', {'class':'apphub_AppName'}).text
-    return name
+    info = []
+    # Add the name of the game
+    info.append( soup.find('div', {'class':'apphub_AppName'}).text )
+    # Add the image
+    info.append( soup.find('img', {'class':'apphub_StoreAppLogo'})['src'] )
+    # Add the description
+    info.append( soup.find('div', {'class':'apphub_StoreAppText'}).text )
 
-# Gets a game description from a steam app id
-def game_description(steam_app_id):
-    url = 'http://steamcommunity.com/app/%d' %steam_app_id
-    rv = requests.get(url)
-    soup=BeautifulSoup(rv.text)
-    description = soup.find('div', {'class':'apphub_StoreAppText'}).text
-    return description
+    return info
 
 # Gets news for a game on steam from a steam app id
-def game_news(steam_app_id):
+def game_news(steamAppId):
     params = {
         'key': STEAM_API_KEY,
-        'appid': steam_app_id,
+        'appid': steamAppId,
         'count': 3,
         'maxLength': 4000
     }
