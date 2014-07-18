@@ -6,6 +6,7 @@
         <h1>{{ game.name }}</h1>
         <a href={{game.steam_url}}> <img src={{game.image}}> </a> <br>
         <h5>{{game.description}}</h5>
+      </div>
 
         <div class="col-md-4">
 
@@ -16,23 +17,27 @@
           <param name="flashvars" value="hostname=www.twitch.tv&channel={{game_streams}}&auto_play=false&start_volume=25" /></object>
 
         </div>
-      </div>
-      <div class="col-md-4">
 
-        <h3>Youtube Videos</h3>
+    </div>
+    <h3 class="center">Youtube Videos</h3>
+    <div class="row-fluid">
+
+
+
+        <div class="row-fluid">
         {% for video in yt_videos %}
-          <object width="620" height="378">
+        <div class="col-md-4">
+          <object width="310" height="189">
             <param name="movie" value="https://www.youtube.com/v/{{video}}version=3&autoplay=0"></param>
             <param name="allowScriptAccess" value="always"></param>
-            <embed src="https://www.youtube.com/v/{{video}}?version=3&autoplay=0" type="application/x-shockwave-flash" allowscriptaccess="always" width="620" height="378"></embed>
+            <embed src="https://www.youtube.com/v/{{video}}?version=3&autoplay=0" type="application/x-shockwave-flash" allowscriptaccess="always" width="310" height="189"></embed>
           </object>
+        </div>
          {% endfor %}
+       </div>
+       
 
-      </div>
 
-      <div class="col-sm-2">
-        <!-- <p>test</p> -->
-      </div>
     </div>
 
 {% endblock %}
