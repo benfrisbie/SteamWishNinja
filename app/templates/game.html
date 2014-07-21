@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-xs-1">
+      </div>
+      <div class="col-md-4">
 
         <h1>{{ game.name }}</h1><br>
         <a href="{{game.steamUrl}}"> <img src="{{game.image}}"> </a> <br>
@@ -36,7 +38,9 @@
         {% endfor %}
 
 
-          <p>{{pcArticle}}</p>
+          {% for title in pcArticle %}
+            {{title}}
+          {% endfor %}
 
        </div>
 
