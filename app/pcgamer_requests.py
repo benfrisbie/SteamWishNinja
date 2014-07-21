@@ -14,7 +14,8 @@ def searchPcGame(game):
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
     zz = soup.find_all(id="search_items")
+    titles = [a.get_text() for a in soup.find_all('h3')]
     # zzSoup = BeautifulSoup(zz.text)
     # foo = []
     # foo.append(articlesSoup)
-    return zz
+    return titles
