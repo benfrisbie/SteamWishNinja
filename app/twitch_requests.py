@@ -10,7 +10,7 @@ from flask import jsonify
 def topgames():
     toplist = requests.get('https://api.twitch.tv/kraken/games/top')
     return jsonify(toplist.json())
-    
+
 
 # Search twitch for a specific game
 def searchgame(game):

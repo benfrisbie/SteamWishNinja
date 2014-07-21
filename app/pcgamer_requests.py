@@ -13,4 +13,8 @@ def searchPcGame(game):
     url = 'http://www.pcgamer.com/search/%s' %game
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
-    soup.find_all(id="search_items")
+    zz = soup.find_all(id="search_items")
+    # zzSoup = BeautifulSoup(zz.text)
+    # foo = []
+    # foo.append(articlesSoup)
+    return zz

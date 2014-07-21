@@ -4,7 +4,7 @@
 # Each python function in here will map to 1 or more request URLs.
 # *************************************************************************
 
-import re, requests, json, steam_requests, twitch_requests, youtube_requests
+import re, requests, json, steam_requests, twitch_requests, youtube_requests, pcgamer_requests
 from flask import render_template, redirect, flash, url_for, g, session, jsonify
 from app import app, oid, db, models
 from models import User, Game
@@ -86,8 +86,8 @@ def game(steamAppId):
     twitchStream = twitch_requests.searchgame(game.name) # need to return an embeded url to display as test
 
     ytVideos = youtube_requests.search_videos(game)
-
-    return render_template('game.html', game = game, twitchStream = twitchStream, ytVideos = ytVideos)
+    pcArticle = pcgamer_requests.searchPcGame(game.name)
+    return render_template('game.html', game = game, twitchStream = twitchStream, ytVideos = ytVideos, pcArticle = pcArticle)
 
 
 # Page for the top games on Twitch
