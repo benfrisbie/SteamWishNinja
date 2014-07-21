@@ -21,9 +21,9 @@ def search_videos(game):
     url = 'https://www.googleapis.com/youtube/v3/search'
     rv = requests.get(url, params=params).json()
 
-    video_ids = []
+    videoIds = []
     if(rv['pageInfo']['totalResults'] != 0):
     	for video in rv['items']:
-    		video_ids.append(video['id']['videoId'])
+    		videoIds.append(video['id']['videoId'])
 
-    return video_ids
+    return videoIds

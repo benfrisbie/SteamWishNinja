@@ -5,7 +5,10 @@
 
     <div class="row">
       <div class="col-md-6">
-        <p class="row"><h1>{{ user.nickname }}'s Profile</h1> <h5>SteamID = {{ user.steam_id }}</h5></p>
+        <p class="row">
+          <h1>{{ user.nickname }}'s Profile</h1>
+          <h5>SteamID = {{ user.steamId }}</h5>
+        </p>
         <div class="col-md-4">
           <br><img src="{{user.avatar}}" class="img-rounded"/> <br>
         </div>
@@ -15,8 +18,8 @@
         <ul>
         {% for game in wishlist %}
             <li>
-              <a href="{{ url_for('game', steam_app_id = game.steam_app_id) }}"> {{game.name}} </a>
-              <a href="{{ url_for('game', steam_app_id = game.steam_app_id) }}"> <img src="{{game.image}}" height="100" width="200"> </a> 
+              <a href="{{ url_for('game', steamAppId = game.steamAppId) }}"> {{game.name}} </a>
+              <a href="{{ url_for('game', steamAppId = game.steamAppId) }}"> <img src="{{game.image}}" height="100" width="200"> </a> 
             </li>
         {% endfor %}
         </ul>

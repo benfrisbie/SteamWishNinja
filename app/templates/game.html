@@ -3,8 +3,8 @@
     <div class="row">
       <div class="col-md-6">
 
-        <h1>{{ game.name }}</h1>
-        <a href={{game.steam_url}}> <img src={{game.image}}> </a> <br>
+        <h1>{{ game.name }}</h1><br>
+        <a href="{{game.steamUrl}}"> <img src="{{game.image}}"> </a> <br>
         <h5>{{game.description}}</h5>
       </div>
 
@@ -12,9 +12,9 @@
 
 
           <h3>Twitch Stream</h3>
-          <object type="application/x-shockwave-flash" height="378" width="620" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{game_streams}}" bgcolor="#000000"><param name="allowFullScreen" value="true" />
+          <object type="application/x-shockwave-flash" height="378" width="620" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{twitchStream}}" bgcolor="#000000"><param name="allowFullScreen" value="true" />
           <param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" />
-          <param name="flashvars" value="hostname=www.twitch.tv&channel={{game_streams}}&auto_play=false&start_volume=25" /></object>
+          <param name="flashvars" value="hostname=www.twitch.tv&channel={{twitchStream}}&auto_play=false&start_volume=25" /></object>
 
         </div>
 
@@ -24,16 +24,16 @@
 
 
 
-        <div class="row-fluid">
-        {% for video in yt_videos %}
-        <div class="col-md-4">
-          <object width="310" height="189">
-            <param name="movie" value="https://www.youtube.com/v/{{video}}version=3&autoplay=0"></param>
-            <param name="allowScriptAccess" value="always"></param>
-            <embed src="https://www.youtube.com/v/{{video}}?version=3&autoplay=0" type="application/x-shockwave-flash" allowscriptaccess="always" width="310" height="189"></embed>
-          </object>
-        </div>
-         {% endfor %}
+       <div class="row-fluid">
+        {% for video in ytVideos %}
+          <div class="col-md-4">
+            <object width="310" height="189">
+              <param name="movie" value="https://www.youtube.com/v/{{video}}version=3&autoplay=0"></param>
+              <param name="allowScriptAccess" value="always"></param>
+              <embed src="https://www.youtube.com/v/{{video}}?version=3&autoplay=0" type="application/x-shockwave-flash" allowscriptaccess="always" width="310" height="189"></embed>
+            </object>
+          </div>
+        {% endfor %}
        </div>
        
 
