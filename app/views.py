@@ -63,7 +63,7 @@ def logout():
 def user(nickname):
     user = User.query.filter_by(nickname = nickname).first()
     if user == None:
-        flash('User with SteamID: ' + nickname + ' not found.')
+        flash('User: ' + nickname + ' not found.')
         return redirect(url_for('index'))
 
     wishlistIds = steam_requests.user_wishlist(user.steamId)
@@ -83,10 +83,12 @@ def user(nickname):
 def game(steamAppId):
     # Get the gameId on steam here
     game = Game.query.filter_by(steamAppId = steamAppId).first()
-    twitchStream = twitch_requests.searchgame(game.name) # need to return an embeded url to display as test
 
+    #All the resources to be displayed
+    twitchStream = twitch_requests.searchgame(game.name)
     ytVideos = youtube_requests.search_videos(game)
     pcArticle = pcgamer_requests.searchPcGame(game.name)
+
     return render_template('game.html', game = game, twitchStream = twitchStream, ytVideos = ytVideos, pcArticle = pcArticle)
 
 
