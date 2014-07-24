@@ -62,6 +62,8 @@ def logout():
 @app.route('/user/<nickname>')
 def user(nickname):
     user = User.query.filter_by(nickname = nickname).first()
+
+    # Check to see it's an actual user in our db
     if user == None:
         flash('User: ' + nickname + ' not found.')
         return redirect(url_for('index'))
@@ -84,6 +86,11 @@ def game(steamAppId):
     # Get the gameId on steam here
     game = Game.query.filter_by(steamAppId = steamAppId).first()
 
+    # Check to see it's an actual game in our db
+    if(game is None):
+        flash('Game: ' + steamAppId + ' not found.')
+        return redirect(url_for('index'))
+
     #All the resources to be displayed
     twitchStream = twitch_requests.searchgame(game.name)
     ytVideos = youtube_requests.search_videos(game)
@@ -103,3 +110,9 @@ def topgamesontwitch():
 def userlist():
     users = models.User.query.all()
     return render_template('users.html', users = users)
+
+
+# Page not found 404
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html')

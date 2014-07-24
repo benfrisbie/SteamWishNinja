@@ -1,5 +1,10 @@
 {% extends "base.html" %}
-{% block content %}
+
+{% block title %}
+	Fristatsic - userlist
+{% endblock %}
+
+{% block body %}
     
     {% for user in users %}
     	<li><a href="{{ url_for('user', nickname = user.nickname) }}">{{user.nickname}}</a></li>
