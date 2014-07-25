@@ -18,12 +18,22 @@
       <div class="col-md-4">
         <h2>Wishlist:</h2>
         <ul>
-        {% for game in wishlist %}
-            <li>
-              <a href="{{ url_for('game', steamAppId = game.steamAppId) }}"> {{game.name}} </a>
-              <a href="{{ url_for('game', steamAppId = game.steamAppId) }}"> <img src="{{game.image}}" height="100" width="200"> </a> 
-            </li>
-        {% endfor %}
+          {% if wishlist != None %}
+              {% for game in wishlist %}
+                  <li>
+                    <a href="{{ url_for('game', steamAppId = game.steamAppId) }}"> {{game.name}} </a>
+                    <a href="{{ url_for('game', steamAppId = game.steamAppId) }}"> <img src="{{game.image}}" height="100" width="200"> </a> 
+                  </li>
+              {% endfor %}
+          {% else %}
+              <h3>There are no games to display</h3>
+              <ul>
+                  {% if g.user == user %}
+                      <li>Insure that there are games in your <a href="http://steamcommunity.com/profiles/{{user.steamId}}/wishlist/">Steam Wishlist</a>.</li>
+                      <li>Insure that your Steam account settings are set to public. You may have to wait a few minutes after changing this.</li>
+                  {% endif %}
+              </ul>
+          {% endif %}
         </ul>
       </div>
       <div class="col-sm-2">
