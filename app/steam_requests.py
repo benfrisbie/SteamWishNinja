@@ -33,6 +33,7 @@ def user_wishlist(steamId):
 # Result array format -> [name, image, description]
 def game_info(steamAppId):
     url = 'http://steamcommunity.com/app/%d' %steamAppId
+    #url = 'http://store.steampowered.com/app/%d' %steamAppId
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
 
@@ -43,6 +44,14 @@ def game_info(steamAppId):
     info.append( soup.find('img', {'class':'apphub_StoreAppLogo'})['src'] )
     # Add the description
     info.append( soup.find('div', {'class':'apphub_StoreAppText'}).text )
+
+    # Messing with issue#19
+    # # Add the name of the game
+    # info.append( soup.find('div', {'class':'apphub_AppName'}).text )
+    # # Add the image
+    # info.append( soup.find('img', {'class':'game_header_image'})['src'] )
+    # # Add the description
+    # info.append( soup.find('div', {'class':'game_description_snippet'}).text )
 
     return info
 
