@@ -1,3 +1,3 @@
 # Run this file to start the application.
 from app import app
-app.run(debug = True, host='127.0.0.1', port=3000)
+app.run(host='162.243.87.143', port=80)

@@ -1,3 +1,4 @@
+db_repository/
 *.db
 *.pyc
 .DS_Store
