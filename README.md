@@ -28,8 +28,13 @@ Some links that may be helpful during development.
 
 
 ####Requirements.txt####
-- pip install -r requirements.txt : to install
-- pip freeze > requirements.txt : to update requirements.txt
+- To install: ```pip install -r requirements.txt```
+- To update requirements.txt: ```pip freeze > requirements.txt```
+
+####Database Stuff####
+- To delete database: ```rm app.db```
+- To create a new database: ```pyhton db_create.py```
+- To migrate/upgrade database: ```pyhton db_migrate.py```
 
 ####Potato Knishes####
 - http://www.youtube.com/watch?v=IFfLCuHSZ-U
