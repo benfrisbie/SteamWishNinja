@@ -3,6 +3,7 @@
 .DS_Store
 app/.DS_Store
 # Distribution / packaging
+db_repository/
 .Python
 env/
 build/
