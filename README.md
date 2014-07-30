@@ -33,7 +33,7 @@ Some links that may be helpful during development.
 
 ####Database Stuff####
 - To delete database: ```rm app.db```
-- To create a new database: ```pyhton db_create.py```
+- To create a new database: ```python db_create.py```
 - To migrate/upgrade database: ```pyhton db_migrate.py```
 
 ####Potato Knishes####
