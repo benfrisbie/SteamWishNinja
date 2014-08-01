@@ -4,7 +4,7 @@
 # Each python function in here will map to 1 or more request URLs.
 # *************************************************************************
 
-import re, requests, json, steam_requests, twitch_requests, youtube_requests, pcgamer_requests
+import re, requests, json, steam_requests, twitch_requests, youtube_requests, pcgamer_requests, logging
 from flask import render_template, redirect, flash, url_for, g, session, jsonify
 from app import app, oid, db, models
 from models import User, Game

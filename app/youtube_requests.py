@@ -3,7 +3,7 @@
 # Holds all of our requests that will be sent to the youtube api.
 # *******************************************************************************
 
-import requests, json
+import requests, json, logging
 from config import YOUTUBE_API_KEY
 
 # Get a list of videoIds pertaining to the game being searched

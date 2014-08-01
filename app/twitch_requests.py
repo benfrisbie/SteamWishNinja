@@ -3,7 +3,7 @@
 # Holds all of our requests that will be sent to the twitch api.
 # *******************************************************************************
 
-import requests, json
+import requests, json, logging
 from flask import jsonify
 
 # Simply gets the top games on Twitch.TV

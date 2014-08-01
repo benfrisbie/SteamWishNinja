@@ -5,6 +5,7 @@
 import requests, json
 from flask import jsonify
 from bs4 import BeautifulSoup
+import logging
 
 # baseUrl="http://www.pcgamer.com/search/%s"
 
@@ -15,7 +16,9 @@ def searchPcGame(game):
     soup=BeautifulSoup(rv.text)
     zz = soup.find_all(id="search_items")
     titles = [a.get_text() for a in soup.find_all('h3')]
+    logging.warning(zz)
     # zzSoup = BeautifulSoup(zz.text)
     # foo = []
     # foo.append(articlesSoup)
-    return titles
+    # return titles
+    return zz
