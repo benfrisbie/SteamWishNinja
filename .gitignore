@@ -1,6 +1,7 @@
 db_repository/
 *.db
 *.pyc
+*.log
 .DS_Store
 app/.DS_Store
 # Distribution / packaging
