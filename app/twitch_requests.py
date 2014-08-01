@@ -5,6 +5,7 @@
 
 import requests, json, logging
 from flask import jsonify
+logging.basicConfig(filename='output.log',level=logging.DEBUG)
 
 # Simply gets the top games on Twitch.TV
 def topgames():

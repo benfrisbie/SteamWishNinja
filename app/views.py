@@ -8,6 +8,7 @@ import re, requests, json, steam_requests, twitch_requests, youtube_requests, pc
 from flask import render_template, redirect, flash, url_for, g, session, jsonify
 from app import app, oid, db, models
 from models import User, Game
+logging.basicConfig(filename='output.log',level=logging.DEBUG)
 
 
 # The first page/home that will be displayed first
