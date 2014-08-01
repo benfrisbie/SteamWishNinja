@@ -22,8 +22,10 @@ def searchgame(game):
 
     url = 'https://api.twitch.tv/kraken/streams/?'
     gameSearch = requests.get(url, params=params).json()
+    logging.warning(gameSearch)
     if(gameSearch['_total'] == 0):
     	channel=""
+      logging.warning(game + " has no streams.")
     elif(gameSearch['streams'] == 0):
     	channel=""
     else:
