@@ -5,6 +5,7 @@
 
 from app import db
 import steam_requests
+import datetime
 
 #Model for our users
 class User(db.Model):
@@ -36,6 +37,7 @@ class Game(db.Model):
     image = db.Column(db.String(4000))
     steamUrl = db.Column(db.String(4000))
     description = db.Column(db.String(4000))
+    prices = db.relationship('Price', backref='game', lazy='dynamic')
 
     #Gets a game, if it doesnt exist create it
     @staticmethod
@@ -52,7 +54,25 @@ class Game(db.Model):
             db.session.add(rv)
         return rv
 
+    #Adds a price point to this game
+    def add_price(self, price):
+        self.prices.append(price)
+        db.session.merge(self)
+        return self
+
     #How Game is printed
     def __repr__(self):
         return '<Game= name: %s, Steam ID: %d>' %(self.name , self.steamAppId)
+
+
+#Model for price point on a game
+class Price(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    steamAppId = db.Column(db.Integer, db.ForeignKey('game.steamAppId'))
+    price = db.Column(db.Integer)
+    ts = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+    #How Price is printed
+    def __repr__(self):
+        return '<Price= appId: %s, price: %d, ts: %s>' %(self.steamAppId , self.price, str(self.ts))
 
