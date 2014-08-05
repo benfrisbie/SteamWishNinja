@@ -37,6 +37,7 @@ class Game(db.Model):
     image = db.Column(db.String(4000))
     steamUrl = db.Column(db.String(4000))
     description = db.Column(db.String(4000))
+    priceCurrent = db.Column(db.Integer)
     prices = db.relationship('Price', backref='game', lazy='dynamic')
 
     #Gets a game, if it doesnt exist create it
@@ -56,6 +57,7 @@ class Game(db.Model):
 
     #Adds a price point to this game
     def add_price(self, price):
+        self.priceCurrent = price.price
         self.prices.append(price)
         db.session.merge(self)
         return self
