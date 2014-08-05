@@ -5,7 +5,7 @@
 
 import requests, json, logging
 from config import YOUTUBE_API_KEY
-logging.basicConfig(filename='output.log',level=logging.DEBUG)
+logging.basicConfig(filename='output.log',level=logging.WARNING)
 
 # Get a list of videoIds pertaining to the game being searched
 def search_videos(game):

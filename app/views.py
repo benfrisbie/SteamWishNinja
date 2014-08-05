@@ -8,7 +8,7 @@ import re, requests, json, steam_requests, twitch_requests, youtube_requests, pc
 from flask import render_template, redirect, flash, url_for, g, session, jsonify
 from app import app, oid, db, models
 from models import User, Game
-logging.basicConfig(filename='output.log',level=logging.DEBUG)
+logging.basicConfig(filename='output.log',level=logging.WARNING)
 
 
 # The first page/home that will be displayed first
@@ -97,7 +97,11 @@ def game(steamAppId):
     ytVideos = youtube_requests.search_videos(game)
     pcArticle = pcgamer_requests.searchPcGame(game.name)
 
-    return render_template('game.html', game = game, twitchStream = twitchStream, ytVideos = ytVideos, pcArticle = pcArticle)
+
+    #Some fake price data for example
+    priceData = [20, 15, 20, 18, 10]
+
+    return render_template('game.html', game = game, twitchStream = twitchStream, ytVideos = ytVideos, pcArticle = pcArticle, priceData = priceData)
 
 
 # Page for the top games on Twitch
@@ -116,4 +120,4 @@ def userlist():
 # Page not found 404
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html')
+    return render_template('404.html'), 404

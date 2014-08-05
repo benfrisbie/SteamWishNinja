@@ -6,7 +6,7 @@ import requests, json
 from flask import jsonify
 from bs4 import BeautifulSoup
 import logging
-logging.basicConfig(filename='output.log',level=logging.DEBUG)
+logging.basicConfig(filename='output.log',level=logging.WARNING)
 
 # baseUrl="http://www.pcgamer.com/search/%s"
 

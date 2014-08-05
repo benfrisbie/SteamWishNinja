@@ -47,9 +47,35 @@
             {{title}}
           {% endfor %}
 
+
+          <br>
+          <h3 class="center">Pricing Info</h3>
+          <div id="pricegraph"></div>
+
        </div>
 
 
 
     </div>
+{% endblock %}
+
+
+{% block footer %}
+  <script type="text/javascript">
+      var priceData = {{ priceData|tojson }};
+      array = ["{{game.name}}"];
+
+      for (var i=0; i<priceData.length; i++) {
+          array.push(priceData[i]);
+      }
+
+      var chart = c3.generate({
+      bindto: '#pricegraph',
+      data: {
+        columns: [
+          array
+        ]
+      }
+      });
+   </script>
 {% endblock %}
