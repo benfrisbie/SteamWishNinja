@@ -25,7 +25,7 @@ def searchgame(game):
     logging.warning(gameSearch)
     if(gameSearch['_total'] == 0):
     	channel=""
-      logging.warning(game + " has no streams.")
+        logging.warning(game + " has no streams.")
     elif(gameSearch['streams'] == 0):
     	channel=""
     else:
