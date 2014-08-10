@@ -32,29 +32,29 @@ def user_wishlist(steamId):
 # Gets a game info from a steam app id
 # Result array format -> [name, image, description]
 def game_info(steamAppId):
-    # url = 'http://steamcommunity.com/app/%d' %steamAppId
-    url = 'http://store.steampowered.com/app/%d' %steamAppId
+    url = 'http://steamcommunity.com/app/%d' %steamAppId
+    # url = 'http://store.steampowered.com/app/%d' %steamAppId
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
 
     info = []
     # Add the name of the game
+    info.append( soup.find('div', {'class':'apphub_AppName'}).text )
+    # Add the image
+    info.append( soup.find('img', {'class':'apphub_StoreAppLogo'})['src'] )
+    # Add the description
+    info.append( soup.find('div', {'class':'apphub_StoreAppText'}).text )
+
+    # # Messing with issue#19
+    # # Add the name of the game
     # info.append( soup.find('div', {'class':'apphub_AppName'}).text )
     # # Add the image
-    # info.append( soup.find('img', {'class':'apphub_StoreAppLogo'})['src'] )
-    # # Add the description
-    # info.append( soup.find('div', {'class':'apphub_StoreAppText'}).text )
-
-    # Messing with issue#19
-    # # Add the name of the game
-    info.append( soup.find('div', {'class':'apphub_AppName'}).text )
-    # # Add the image
-    info.append( soup.find('img', {'class':'game_header_image'})['src'] )
+    # info.append( soup.find('img', {'class':'game_header_image'})['src'] )
     # # Add the description
     # info.append( soup.find('div', {'class':'game_description_snippet'}).text )
-    text = soup.find(id="game_area_description")
-    result = re.search(r'.*(<h2 class="bb_tag">)', str(text))
-    info.append(result.group())
+    # text = soup.find(id="game_area_description")
+    # result = re.search(r'.*(<h2 class="bb_tag">)', str(text))
+    # info.append(result.group())
     # info.append(soup.find(id="game_area_description").text )# gets the game description
 
     return info
