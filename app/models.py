@@ -17,12 +17,12 @@ class User(db.Model):
     #Gets a user, if they dont exist create them
     @staticmethod
     def get_or_create(steamId):
-        rv = User.query.filter_by(steamId = steamId).first()
-        if rv is None:
-            rv = User()
-            rv.steamId = steamId
-            db.session.add(rv)
-        return rv
+        user = User.query.filter_by(steamId = steamId).first()
+        if user is None:
+            user = User()
+            user.steamId = steamId
+            db.session.add(user)
+        return user
 
     #How User is printed
     def __repr__(self):
@@ -40,20 +40,23 @@ class Game(db.Model):
     priceCurrent = db.Column(db.Integer)
     prices = db.relationship('Price', backref='game', lazy='dynamic')
 
-    #Gets a game, if it doesnt exist create it
+    #Gets a game
     @staticmethod
-    def get_or_create(steamAppId):
-        rv = Game.query.filter_by(steamAppId = steamAppId).first()
-        if rv is None:
-            rv = Game()
-            rv.steamAppId = steamAppId
-            info = steam_requests.game_info(steamAppId)
-            rv.name = info[0]
-            rv.image = info[1]
-            rv.description = info[2]
-            rv.steamUrl = 'http://steamcommunity.com/app/%d' %steamAppId
-            db.session.add(rv)
-        return rv
+    def get(steamAppId):
+        return Game.query.filter_by(steamAppId = steamAppId).first()
+
+    #Create a game
+    @staticmethod
+    def create(steamAppId):
+        game = Game()
+        game.steamAppId = steamAppId
+        info = steam_requests.game_info(steamAppId)
+        game.name = info[0]
+        game.image = info[1]
+        game.description = info[2]
+        game.steamUrl = 'http://steamcommunity.com/app/%d' %steamAppId
+        db.session.add(game)
+        return game
 
     #Adds a price point to this game
     def add_price(self, price):
