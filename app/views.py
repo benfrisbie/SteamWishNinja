@@ -34,11 +34,12 @@ def login():
 def create_or_login(resp):
     steamIdRe = re.compile('steamcommunity.com/openid/id/(.*?)$')
     match = steamIdRe.search(resp.identity_url)
-    g.user = User.get_or_create(match.group(1))
-    steamdata = steam_requests.user_info(g.user.steamId)
-    g.user.nickname = steamdata['personaname']
-    g.user.avatar = steamdata['avatarfull']
-    db.session.commit()
+    g.user = User.get(match.group(1))
+    if(g.user is None):
+        g.user = User.create(match.group(1))
+    else:
+        g.user = g.user.update()
+
     session['user_id'] = g.user.id
     flash('You logged in as %s' %g.user.nickname )
     return redirect(url_for('user', nickname = g.user.nickname))
@@ -74,8 +75,12 @@ def user(nickname):
 
     wishlist = []
     for appId in wishlistIds:
-        game = Game.get_or_create(appId)
-        wishlist.append(game)
+        game = Game.get(appId)
+        if(game is not None):
+            wishlist.append(game)
+        else:
+            game = Game.create(appId)
+            wishlist.append(game)
 
     db.session.commit()
 

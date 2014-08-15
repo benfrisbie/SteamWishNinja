@@ -14,15 +14,31 @@ class User(db.Model):
     nickname = db.Column(db.String(33))
     avatar = db.Column(db.String(4000))
 
-    #Gets a user, if they dont exist create them
+    #Gets a user
     @staticmethod
-    def get_or_create(steamId):
-        user = User.query.filter_by(steamId = steamId).first()
-        if user is None:
-            user = User()
-            user.steamId = steamId
-            db.session.add(user)
+    def get(steamId):
+        return User.query.filter_by(steamId = steamId).first()
+
+    #Create a user
+    @staticmethod
+    def create(steamId):
+        user = User()
+        user.steamId = steamId
+        steamdata = steam_requests.user_info(steamId)
+        user.nickname = steamdata['personaname']
+        user.avatar = steamdata['avatarfull']
+        db.session.add(user)
+        db.session.commit()
         return user
+
+    #Update a user
+    def update(self):
+        steamdata = steam_requests.user_info(self.steamId)
+        if(self.nickname != steamdata['personaname'] or self.avatar != steamdata['avatarfull']):
+            self.nickname = steamdata['personaname']
+            self.avatar = steamdata['avatarfull']
+            db.session.commit()
+        return self
 
     #How User is printed
     def __repr__(self):
@@ -58,6 +74,19 @@ class Game(db.Model):
         db.session.add(game)
         return game
 
+    #Update a game
+    def update(self):
+        info = steam_requests.game_info(self.steamAppId)
+        game.name = info[0]
+        game.image = info[1]
+        game.description = info[2]
+        db.session.add(game)
+        return game
+
+    #Remove a game
+    def remove(self):
+        db.session.remove(self)
+
     #Adds a price point to this game
     def add_price(self, price):
         self.priceCurrent = price.price
@@ -68,6 +97,7 @@ class Game(db.Model):
     #How Game is printed
     def __repr__(self):
         return '<Game= name: %s, Steam ID: %d>' %(self.name , self.steamAppId)
+
 
 
 #Model for price point on a game
