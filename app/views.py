@@ -8,6 +8,7 @@ import re, requests, json, steam_requests, twitch_requests, youtube_requests, pc
 from flask import render_template, redirect, flash, url_for, g, session, jsonify
 from app import app, oid, db, models
 from models import User, Game
+from sqlalchemy import func
 logging.basicConfig(filename='output.log',level=logging.WARNING)
 
 
@@ -98,8 +99,13 @@ def game(steamAppId):
     pcArticle = pcgamer_requests.searchPcGame(game.name)
 
 
-    #Some fake price data for example
-    priceData = [20, 15, 20, 18, 10]
+    #Add price history
+    priceData = []
+    for price in game.prices:
+        priceData.append( price.price / float(100) )
+
+    #Add the current price to the end
+    priceData.append( game.priceCurrent / float(100) )
 
     return render_template('game.html', game = game, twitchStream = twitchStream, ytVideos = ytVideos, pcArticle = pcArticle, priceData = priceData)
 
@@ -113,8 +119,15 @@ def topgamesontwitch():
 # Returns a list of all the users in our db
 @app.route('/userlist')
 def userlist():
-    users = models.User.query.all()
+    users = User.query.all()
     return render_template('users.html', users = users)
+
+
+# Returns a list of random games
+@app.route('/randomgames')
+def randomgames():
+    games = Game.query.order_by(func.random()).limit(20)
+    return render_template('randomgames.html', games = games)
 
 
 # Page not found 404

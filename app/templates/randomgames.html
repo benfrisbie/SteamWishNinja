@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}
+	SteamWish - Random Games
+{% endblock %}
+
+{% block body %}
+    
+    {% for game in games %}
+    	<li><a href="{{ url_for('game', steamAppId = game.steamAppId) }}">{{game.name}}</a></li>
+    {% endfor %}
+
+{% endblock %}
