@@ -78,9 +78,10 @@ def user(nickname):
         game = Game.get(appId)
         if(game is not None):
             wishlist.append(game)
-        else:
-            game = Game.create(appId)
-            wishlist.append(game)
+        # TODO: Add after isuue#25 fixed
+        # else:
+        #     game = Game.create(appId)
+        #     wishlist.append(game)
 
     db.session.commit()
 

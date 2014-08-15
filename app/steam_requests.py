@@ -39,7 +39,7 @@ def game_info(steamAppId):
 
     name = soup.find('div', {'class':'apphub_AppName'})
     if(name is None): # We hit the birthdate redirect most likely
-        #TODO:Validate age and Navigate to actual game page
+        #TODO:Issue #25
         name = ''
 
     info = []
