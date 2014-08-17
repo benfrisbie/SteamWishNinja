@@ -34,12 +34,14 @@ for page in range(1, numPages+1):
 	#Loop through all the games on this page
 	for gameDiv in gamesOnPage:
 		appId = int( re.search('\d+', gameDiv['href']).group(0) )
+		name = gameDiv.find('h4').text
 		game = models.Game.get(appId)
 
 		priceString = gameDiv.find("div", {"class":"col search_price"}).text.strip('$')
 
 		#TODO:Check if it says 'Free to play'
-		if(priceString is None or priceString == '' or priceString.lower() == 'Free to Play'.lower()):
+		lowerString = priceString.lower()
+		if(re.search('\d+', priceString) is None):
 			price = 0			
 		elif( len(priceString.split('$')) > 1):
 			priceString = priceString.split('$')[1]
@@ -48,18 +50,18 @@ for page in range(1, numPages+1):
 			price = int( float(priceString) * 100)
 
 		if(game is None): #New game in our DB
-			game = models.Game.create(appId)
+			game = models.Game.create(appId, name)
 			
 			pricePoint = models.Price(price=price)
 			game.add_price(pricePoint)
 
-			print '+ (%d) %s - $%s' %(game.steamAppId, game.name, priceString)
+			print '+ (%d) %s - $%s' %(game.steamAppId, game.name, price / float(100))
 
 		else: #Game thats already in our DB
 			if(price != game.priceCurrent): #Price difference
 				pricePoint = models.Price(price=price)
 				game.add_price(pricePoint)
-				print '* (%d) %s - $%s' %(game.steamAppId, game.name, priceString)
+				print '* (%d) %s - $%f' %(game.steamAppId, game.name, price / float(100))
 		
 	print '---------------------------------Page#%d------------------------------------' %(page+1)
 	db.session.commit()

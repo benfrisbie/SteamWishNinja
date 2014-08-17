@@ -63,23 +63,20 @@ class Game(db.Model):
 
     #Create a game
     @staticmethod
-    def create(steamAppId):
+    def create(steamAppId, name):
         game = Game()
         game.steamAppId = steamAppId
-        info = steam_requests.game_info(steamAppId)
-        game.name = info[0]
-        game.image = info[1]
-        game.description = info[2]
+        game.name = name
+        game.image = 'http://cdn.akamai.steamstatic.com/steam/apps/%d/header.jpg' %steamAppId
+        game.description = steam_requests.game_description(steamAppId)
         game.steamUrl = 'http://steamcommunity.com/app/%d' %steamAppId
         db.session.add(game)
         return game
 
     #Update a game
     def update(self):
-        info = steam_requests.game_info(self.steamAppId)
-        game.name = info[0]
-        game.image = info[1]
-        game.description = info[2]
+        game.image = 'http://cdn.akamai.steamstatic.com/steam/apps/%d/header.jpg' %self.steamAppId
+        game.description = steam_requests.game_description(self.steamAppId)
         db.session.add(game)
         return game
 

@@ -31,26 +31,19 @@ def user_wishlist(steamId):
 
 # Gets a game info from a steam app id
 # Result array format -> [name, image, description]
-def game_info(steamAppId):
+def game_description(steamAppId):
     url = 'http://store.steampowered.com/app/%d' %steamAppId
     rv = requests.get(url)
     soup=BeautifulSoup(rv.text)
 
-
-    name = soup.find('div', {'class':'apphub_AppName'})
-    if(name is None): # We hit the birthdate redirect most likely
+    des = soup.find('div', {'class':'game_description_snippet'})
+    if(des is None): # We hit the birthdate redirect most likely
         #TODO:Issue #25
-        name = ''
+        des = ''
+    else:
+        des = des.text
 
-    info = []
-    # Add the name of the game
-    info.append( name.text )
-    # Add the image
-    info.append( soup.find('img', {'class':'game_header_image'})['src'] )
-    # Add the description
-    info.append( soup.find('div', {'class':'game_description_snippet'}).text )
-    
-    return info
+    return des
 
 # Gets news for a game on steam from a steam app id
 def game_news(steamAppId):

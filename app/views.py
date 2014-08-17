@@ -111,7 +111,7 @@ def game(steamAppId):
         priceData.append( price.price / float(100) )
 
     #Add the current price to the end
-    priceData.append( game.priceCurrent / float(100) )
+    #priceData.append( game.priceCurrent / float(100) )
 
     return render_template('game.html', game = game, twitchStream = twitchStream, ytVideos = ytVideos, pcArticle = pcArticle, priceData = priceData)
 
