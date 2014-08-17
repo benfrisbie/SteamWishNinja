@@ -6,8 +6,13 @@
 
 {% block body %}
     
+    <table>
     {% for game in games %}
-    	<li><a href="{{ url_for('game', steamAppId = game.steamAppId) }}">{{game.name}}</a></li>
+        <tr>
+            <td><a href="{{ url_for('game', steamAppId = game.steamAppId) }}">{{game.name}}</a></td>
+            <td><a href="{{ url_for('game', steamAppId = game.steamAppId) }}"><img src="{{game.image}}" height="100" width="200"></a></td>
+        </tr>
     {% endfor %}
+    </table>
 
 {% endblock %}
