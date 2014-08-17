@@ -7,9 +7,9 @@ DEBUG = True
 SECRET_KEY = 'super-secret-password'
 
 #Steam API key
-STEAM_API_KEY = '6540575332D180142AEBDDCB539005B7'
+STEAM_API_KEY = os.environ['STEAM_API_KEY']
 
-YOUTUBE_API_KEY = 'AIzaSyDnNeQrRzVvd_KTx7U4ldrYr9KAZ99H6_E'
+YOUTUBE_API_KEY = os.environ['YOUTUBE_API_KEY']
 
 #Database Stuff
 basedir = os.path.abspath(os.path.dirname(__file__))
