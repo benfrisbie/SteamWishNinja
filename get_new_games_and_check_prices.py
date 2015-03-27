@@ -47,7 +47,7 @@ for page in range(1, numPages+1):
 			price = 0			
 		else:
 			try:
-				price = int( float(m[0]) * 100)
+				price = math.ceil(float(m[0]) * 100)
 			except ValueError:
 				price = 0;
 
