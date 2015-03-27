@@ -7,6 +7,7 @@ import requests, json, logging, re
 from bs4 import BeautifulSoup
 from config import STEAM_API_KEY
 from flask import jsonify
+from models import Game
 
 # Get a steam users info
 def user_info(steamId):
@@ -27,7 +28,13 @@ def user_wishlist(steamId):
     games =[]
     for game in soup.find_all('div', {'class':'wishlistRow'}):
         games.append(int(game.get('id').strip('game_')))
-    return games
+
+    wishlist = []
+    for appId in games:
+        game = Game.get(appId)
+        if(game is not None):
+            wishlist.append(game)
+    return wishlist
 
 # Gets a game info from a steam app id
 # Result array format -> [name, image, description]

@@ -17,19 +17,22 @@
 
         <div class="col-md-4">
 
-
+          {% if twitchStream != "" %}
           <h3>Twitch Stream</h3>
           <object type="application/x-shockwave-flash" height="378" width="620" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{twitchStream}}" bgcolor="#000000"><param name="allowFullScreen" value="true" />
           <param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" />
           <param name="flashvars" value="hostname=www.twitch.tv&channel={{twitchStream}}&auto_play=false&start_volume=25" /></object>
+          {% endif %}
 
         </div>
 
     </div>
+
+    {% if ytVideos|length != 0 %}
     <h3 class="center">Youtube Videos</h3>
+    {% endif %}
+
     <div class="row-fluid">
-
-
 
        <div class="row-fluid">
         {% for video in ytVideos %}
@@ -41,11 +44,6 @@
             </object>
           </div>
         {% endfor %}
-
-
-          {% for title in pcArticle %}
-            {{title}}
-          {% endfor %}
 
 
           <br>

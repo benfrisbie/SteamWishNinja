@@ -1,4 +1,5 @@
 db_repository/
+config.py
 *.db
 *.pyc
 *.log

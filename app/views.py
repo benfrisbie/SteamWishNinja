@@ -71,19 +71,7 @@ def user(nickname):
         flash('User: ' + nickname + ' not found.')
         return redirect(url_for('index'))
 
-    wishlistIds = steam_requests.user_wishlist(user.steamId)
-
-    wishlist = []
-    for appId in wishlistIds:
-        game = Game.get(appId)
-        if(game is not None):
-            wishlist.append(game)
-        # TODO: Add after isuue#25 fixed
-        # else:
-        #     game = Game.create(appId)
-        #     wishlist.append(game)
-
-    db.session.commit()
+    wishlist = steam_requests.user_wishlist(user.steamId)
 
     return render_template('user.html', user = user, wishlist = wishlist)
 
@@ -102,7 +90,7 @@ def game(steamAppId):
     #All the resources to be displayed
     twitchStream = twitch_requests.searchgame(game.name)
     ytVideos = youtube_requests.search_videos(game)
-    pcArticle = pcgamer_requests.searchPcGame(game.name)
+    #pcArticle = pcgamer_requests.searchPcGame(game.name)
 
 
     #Add price history
@@ -113,7 +101,7 @@ def game(steamAppId):
     #Add the current price to the end
     #priceData.append( game.priceCurrent / float(100) )
 
-    return render_template('game.html', game = game, twitchStream = twitchStream, ytVideos = ytVideos, pcArticle = pcArticle, priceData = priceData)
+    return render_template('game.html', game = game, twitchStream = twitchStream, ytVideos = ytVideos, priceData = priceData)
 
 
 # Page for the top games on Twitch

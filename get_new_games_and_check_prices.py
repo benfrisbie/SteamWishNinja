@@ -3,11 +3,9 @@
 # at the same time.
 # **************************************************************************************************
 
-import requests, logging, re, math
+import requests, logging, re, math, datetime, sys
 from bs4 import BeautifulSoup
 from app import app, models, db
-
-print 'Starting script...'
 
 url = 'http://store.steampowered.com/search/?sort_by=Name&sort_order=ASC&category1=998&page=1'
 rv = requests.get(url)
@@ -15,17 +13,19 @@ soup = BeautifulSoup(rv.text)
 
 #Find out how many pages there are
 entries = soup.find("div", {"class":"search_pagination_left"}).text.strip()
-print 'entries: %s' %entries
-#TODO: Calcualte number of pages
 numGames = int( entries.split(' ')[5] )
 numGamesPerPage = int( entries.split(' ')[3] )
 numPages = int( math.ceil( numGames / float(numGamesPerPage) ) )
 
+print '*******************************************************************************'
+print datetime.datetime.now()
 print '%d total games / %d games per page = %d pages' %(numGames, numGamesPerPage, numPages)
-print '---------------------------------Page#1------------------------------------'
+print '*******************************************************************************'
 
 # Loop through all the pages of games
 for page in range(1, numPages+1):
+	print '>>Page#%d<<' %(page)
+
 	url = 'http://store.steampowered.com/search/?sort_by=Name&sort_order=ASC&category1=998&page=%d' %page
 	rv = requests.get(url)
 	soup = BeautifulSoup(rv.text)
@@ -34,24 +34,26 @@ for page in range(1, numPages+1):
 	#Loop through all the games on this page
 	for gameDiv in gamesOnPage:
 		appId = int( re.search('\d+', gameDiv['href']).group(0) )
-		name = gameDiv.find('h4').text
 		game = models.Game.get(appId)
 
-		priceString = gameDiv.find("div", {"class":"col search_price"}).text.strip('$')
+		priceDiv = gameDiv.find("div", class_="col search_price ")
+		if(priceDiv is None):
+			priceDiv = gameDiv.find("div", class_="col search_price discounted")
+		priceString = priceDiv.text.strip('$')
 
-		#TODO:Check if it says 'Free to play'
-		lowerString = priceString.lower()
-		if(re.search('\d+', priceString) is None):
+		#Parse the price
+		m = re.findall('\d+.\d+', priceString)
+		if(len(m) == 0):
 			price = 0			
-		elif( len(priceString.split('$')) > 1):
-			priceString = priceString.split('$')[1]
-			price = int( float(priceString) * 100)
 		else:
-			price = int( float(priceString) * 100)
+			try:
+				price = int( float(m[0]) * 100)
+			except ValueError:
+				price = 0;
 
 		if(game is None): #New game in our DB
+			name = gameDiv.find("div", class_="col search_name ellipsis").text.strip()
 			game = models.Game.create(appId, name)
-			
 			pricePoint = models.Price(price=price)
 			game.add_price(pricePoint)
 
@@ -61,12 +63,12 @@ for page in range(1, numPages+1):
 			if(price != game.priceCurrent): #Price difference
 				pricePoint = models.Price(price=price)
 				game.add_price(pricePoint)
-				print '* (%d) %s - $%f' %(game.steamAppId, game.name, price / float(100))
-		
-	print '---------------------------------Page#%d------------------------------------' %(page+1)
-	db.session.commit()
+				print '~ (%d) %s - $%s' %(game.steamAppId, game.name, price / float(100))
 
-#Double check and commit changes to DB
+		db.session.commit()
+
+print ''
+#Commit changes to DB
 db.session.commit()
 
 

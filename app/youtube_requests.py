@@ -14,7 +14,7 @@ def search_videos(game):
         'part': 'snippet',
         'maxResults': 3,
         'order': 'relevance',
-        'q': game.name +'video game',
+        'q': 'steam video game' + game.name,
         'type': 'video',
         'videoEmbeddable': True
     }
