@@ -28,6 +28,13 @@
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
               {% endif %}
             </ul>
+
+              <div align="right">
+              <form action="{{ url_for('search') }}" method="post" name="search">
+                <input name="search" type="text" placeholder="Search for a game or user" id="search-bar"><input type="submit" class="alert button expand" id="search-button" value="Search">
+              </form>
+            </div>
+
           </div>
         </div>
       </div>

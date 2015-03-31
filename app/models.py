@@ -68,7 +68,7 @@ class Game(db.Model):
         game.steamAppId = steamAppId
         game.name = name
         game.image = 'http://cdn.akamai.steamstatic.com/steam/apps/%d/header.jpg' %steamAppId
-        game.description = steam_requests.game_description(steamAppId)
+        game.description = ''#steam_requests.game_description(steamAppId)
         game.steamUrl = 'http://steamcommunity.com/app/%d' %steamAppId
         db.session.add(game)
         return game

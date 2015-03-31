@@ -48,3 +48,10 @@ a:hover{
 #index-center{
   text-align: center;
 }
+
+#search-bar{
+  width:30%;
+}
+#search-button{
+  padding:5px 5px 5px 5px;
+}

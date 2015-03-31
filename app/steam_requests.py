@@ -66,3 +66,26 @@ def game_news(steamAppId):
 
     #we need to return something here
     return 'nothing being returned yet'
+
+# Gets the games a user owns from a steam id
+def get_owned_games(steamId):
+    params = {
+        'key': STEAM_API_KEY,
+        'steamid': steamId
+    }
+
+    url = 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?'
+    rv = requests.get(url, params=params).json()
+
+    games = []
+    if(rv['response']['game_count'] != 0):
+        for game in rv['response']['games']:
+            games.append(game['appid'])
+
+    owned = []
+    for appId in games:
+        game = Game.get(appId)
+        if(game is not None):
+            owned.append(game)
+
+    return owned

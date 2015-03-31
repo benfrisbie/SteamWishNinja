@@ -47,7 +47,7 @@ for page in range(1, numPages+1):
 			price = 0			
 		else:
 			try:
-				price = math.ceil(float(m[0]) * 100)
+				price = round(float(m[len(m)-1]) * 100, 0)
 			except ValueError:
 				price = 0;
 
@@ -64,8 +64,6 @@ for page in range(1, numPages+1):
 				pricePoint = models.Price(price=price)
 				game.add_price(pricePoint)
 				print '~ (%d) %s - $%s' %(game.steamAppId, game.name, price / float(100))
-
-		db.session.commit()
 
 print ''
 #Commit changes to DB

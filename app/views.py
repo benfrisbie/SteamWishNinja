@@ -4,9 +4,10 @@
 # Each python function in here will map to 1 or more request URLs.
 # *************************************************************************
 
-import re, requests, json, steam_requests, twitch_requests, youtube_requests, pcgamer_requests, logging
+import re, requests, json, steam_requests, twitch_requests, youtube_requests, pcgamer_requests, logging, datetime
 from flask import render_template, redirect, flash, url_for, g, session, jsonify
 from app import app, oid, db, models
+from forms import SearchForm
 from models import User, Game
 from sqlalchemy import func
 logging.basicConfig(filename='output.log',level=logging.WARNING)
@@ -73,7 +74,9 @@ def user(nickname):
 
     wishlist = steam_requests.user_wishlist(user.steamId)
 
-    return render_template('user.html', user = user, wishlist = wishlist)
+    owned = steam_requests.get_owned_games(user.steamId)
+
+    return render_template('user.html', user=user, wishlist=wishlist, owned=owned)
 
 
 # Page for a game and all the info on it
@@ -95,13 +98,18 @@ def game(steamAppId):
 
     #Add price history
     priceData = []
+    priceDate = []
     for price in game.prices:
         priceData.append( price.price / float(100) )
+        priceDate.append( (price.ts.month, price.ts.day, price.ts.year) )
 
     #Add the current price to the end
-    #priceData.append( game.priceCurrent / float(100) )
+    priceData.append( game.priceCurrent / float(100) )
+    now = datetime.datetime.utcnow()
+    priceDate.append( (now.month, now.day, now.year) )
 
-    return render_template('game.html', game = game, twitchStream = twitchStream, ytVideos = ytVideos, priceData = priceData)
+
+    return render_template('game.html', game=game, twitchStream=twitchStream, ytVideos=ytVideos, priceData=priceData, priceDate=priceDate)
 
 
 # Page for the top games on Twitch
@@ -122,6 +130,22 @@ def userlist():
 def randomgames():
     games = Game.query.order_by(func.random()).limit(20)
     return render_template('randomgames.html', games = games)
+
+@app.route('/search', methods=['POST'])
+def search():
+    form = SearchForm()
+    searchString = form.search.data
+
+    if(searchString is None):
+        flash('Search bar was empty. You have to search for something.')
+        return redirect(url_for('index'))
+
+    searchString = searchString.lower()
+    
+    games = Game.query.filter(Game.name.like('%'+searchString+'%'))
+    users = User.query.filter(User.nickname.like('%'+searchString+'%'))
+  
+    return render_template('search.html', games=games, users=users)
 
 
 # Page not found 404

@@ -6,9 +6,9 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3">
             <p class="row">
-              <h1>{{ user.nickname }}'s Profile</h1>
+              <h1>{{ user.nickname }}</h1>
               <h5>SteamID = {{ user.steamId }}</h5>
             </p>
             <div class="col-md-4">
@@ -31,15 +31,33 @@
                     <h3>There are no games to display</h3>
                     <ul>
                         {% if g.user == user %}
-                            <li>Insure that there are games in your <a href="http://steamcommunity.com/profiles/{{user.steamId}}/wishlist/">Steam Wishlist</a>.</li>
-                            <li>Insure that your Steam privacy settings are set to public. You may have to wait a few minutes after changing this.</li>
+                            <li>Ensure that there are games in your <a href="http://steamcommunity.com/profiles/{{user.steamId}}/wishlist/">Steam Wishlist</a>.</li>
+                            <li>Ensure that your Steam privacy settings are set to public. You may have to wait a few minutes after changing this.</li>
                         {% endif %}
                     </ul>
                 {% endif %}
         </div>
 
-        <div class="col-sm-2">
-          
+        <div class="col-md-4">
+            <h2>Owned Games:</h2>
+                {% if owned|length > 0 %}
+                    <table>
+                    {% for game in owned %}
+                        <tr>
+                            <td><a href="{{ url_for('game', steamAppId = game.steamAppId) }}">{{game.name}}</a></td>
+                            <td><a href="{{ url_for('game', steamAppId = game.steamAppId) }}"><img src="{{game.image}}" height="100" width="200"></a></td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                {% else %}
+                    <h3>There are no games to display</h3>
+                    <ul>
+                        {% if g.user == user %}
+                            <li>Ensure that you own games in Steam.</li>
+                            <li>Ensure that your Steam privacy settings are set to public. You may have to wait a few minutes after changing this.</li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
         </div>
 
     </div>

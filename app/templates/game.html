@@ -60,20 +60,39 @@
 
 {% block footer %}
   <script type="text/javascript">
-      var priceData = {{ priceData|tojson }};
-      array = ["{{game.name}}"];
+      var priceData = {{priceData|tojson}};
+      var priceDate = {{priceDate|tojson}};
+      var t;
+      
+      price = ["{{game.name}}"];
+      date = ["date"];
 
       for (var i=0; i<priceData.length; i++) {
-          array.push(priceData[i]);
+          price.push(priceData[i]);
+          t = priceDate[i][0] + "-" + priceDate[i][1] + "-" +priceDate[i][2];
+          date.push( t );
       }
 
       var chart = c3.generate({
-      bindto: '#pricegraph',
-      data: {
-        columns: [
-          array
-        ]
-      }
+        bindto: '#pricegraph',
+        data: {
+            x: 'date',
+            x_format : '%m-%d-%Y', // default '%Y-%m-%d'
+            columns: [
+                date,
+                price
+            ]
+        },
+        axis : {
+            x : {
+                type : 'timeseries',
+                tick: {
+                  format: '%m-%d-%Y'
+                }
+            }
+        }
       });
+
+     
    </script>
 {% endblock %}
