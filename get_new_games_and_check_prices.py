@@ -56,7 +56,6 @@ for page in range(1, numPages+1):
 			game = models.Game.create(appId, name)
 			pricePoint = models.Price(price=price)
 			game.add_price(pricePoint)
-
 			print '+ (%d) %s - $%s' %(game.steamAppId, game.name, price / float(100))
 
 		else: #Game thats already in our DB
@@ -64,6 +63,8 @@ for page in range(1, numPages+1):
 				pricePoint = models.Price(price=price)
 				game.add_price(pricePoint)
 				print '~ (%d) %s - $%s' %(game.steamAppId, game.name, price / float(100))
+
+	db.session.commit()
 
 print ''
 #Commit changes to DB

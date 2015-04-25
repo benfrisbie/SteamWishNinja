@@ -7,7 +7,8 @@ import requests, json, logging, re
 from bs4 import BeautifulSoup
 from config import STEAM_API_KEY
 from flask import jsonify
-from models import Game
+from app import models
+#from models import Game, Tag
 
 # Get a steam users info
 def user_info(steamId):
@@ -36,21 +37,52 @@ def user_wishlist(steamId):
             wishlist.append(game)
     return wishlist
 
-# Gets a game info from a steam app id
-# Result array format -> [name, image, description]
-def game_description(steamAppId):
+# Gets a games info from a steam app id
+def game_info(steamAppId, game):
+    # game.tags = game.metacritic = game.genres = game.developers = game.publishers = None
+
     url = 'http://store.steampowered.com/app/%d' %steamAppId
     rv = requests.get(url)
-    soup=BeautifulSoup(rv.text)
+    soup = BeautifulSoup(rv.text)
 
-    des = soup.find('div', {'class':'game_description_snippet'})
-    if(des is None): # We hit the birthdate redirect most likely
-        #TODO:Issue #25
-        des = ''
+    desDiv = soup.find("div", class_="game_description_snippet")
+    if(desDiv is None): #TODO:Issue #25, We hit the birthdate redirect most likely
+        print 'desDiv = None'
+        return
     else:
-        des = des.text
+        game.description = desDiv.text.strip()
 
-    return des
+    #Tags
+    tagsDiv = soup.find("div", class_="glance_tags popular_tags")
+    if tagsDiv is not None:
+        for tag in tagsDiv.find_all("a"):
+            tagP = models.Tag.get_or_create(tag.text.strip(), tag['href'])
+            game.add_tag(tagP)
+
+    #Metacritic
+    metaDiv = soup.find("div", {"id": "game_area_metascore"})
+    if metaDiv is not None:
+        scoreString = metaDiv.text.strip()
+        if "/" in scoreString:
+            game.metacritic = int( metaDiv.text.strip().split("/")[0] )
+        else:
+            game.metacritic = -1
+
+    #Details
+    detailsDiv = soup.find("div", class_="details_block")
+    if detailsDiv is not None:
+        for a in detailsDiv.find_all("a"):
+            if "genre" in a['href']:
+                genre = models.Genre.get_or_create(a.text.strip(), a['href'])
+                game.add_genre(genre)
+            elif "developer" in a['href']:
+                developer = models.Developer.get_or_create(a.text.strip(), a['href'])
+                game.add_developer(developer)
+            elif "publisher" in a['href']:
+                publisher = models.Publisher.get_or_create(a.text.strip(), a['href'])
+                game.add_publisher(publisher)
+    return ""
+
 
 # Gets news for a game on steam from a steam app id
 def game_news(steamAppId):

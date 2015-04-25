@@ -7,6 +7,31 @@ from app import db
 import steam_requests
 import datetime
 
+#Many to Many table for tags
+tagged = db.Table('tagged',
+            db.Column('game_id', db.Integer, db.ForeignKey('game.steamAppId')),
+            db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'))
+        )
+
+#Many to Many table for genres
+genred = db.Table('genred',
+            db.Column('game_id', db.Integer, db.ForeignKey('game.steamAppId')),
+            db.Column('genre_id', db.Integer, db.ForeignKey('genre.id'))
+        )
+
+#Many to Many table for developers
+developed = db.Table('developed',
+            db.Column('game_id', db.Integer, db.ForeignKey('game.steamAppId')),
+            db.Column('developer_id', db.Integer, db.ForeignKey('developer.id'))
+        )
+
+#Many to Many table for published
+published = db.Table('published',
+            db.Column('game_id', db.Integer, db.ForeignKey('game.steamAppId')),
+            db.Column('publisher_id', db.Integer, db.ForeignKey('publisher.id'))
+        )
+
+
 #Model for our users
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -49,12 +74,18 @@ class User(db.Model):
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     steamAppId = db.Column(db.Integer)
-    name = db.Column(db.String(4000))
-    image = db.Column(db.String(4000))
-    steamUrl = db.Column(db.String(4000))
+    name = db.Column(db.String(200))
+    image = db.Column(db.String(100))
+    url = db.Column(db.String(100))
     description = db.Column(db.String(4000))
     priceCurrent = db.Column(db.Integer)
-    prices = db.relationship('Price', backref='game', lazy='dynamic')
+    metacritic = db.Column(db.Integer)
+    prices = db.relationship('Price', backref='pricegame', lazy='dynamic')
+    tags = db.relationship('Tag', secondary = tagged, backref = db.backref('tags', lazy = 'dynamic'))
+    genres = db.relationship('Genre', secondary = genred, backref = db.backref('genres', lazy = 'dynamic'))
+    developers = db.relationship('Developer', secondary = developed, backref = db.backref('developers', lazy = 'dynamic'))
+    publishers = db.relationship('Publisher', secondary = published, backref = db.backref('publishers', lazy = 'dynamic'))
+
 
     #Gets a game
     @staticmethod
@@ -68,16 +99,16 @@ class Game(db.Model):
         game.steamAppId = steamAppId
         game.name = name
         game.image = 'http://cdn.akamai.steamstatic.com/steam/apps/%d/header.jpg' %steamAppId
-        game.description = ''#steam_requests.game_description(steamAppId)
-        game.steamUrl = 'http://steamcommunity.com/app/%d' %steamAppId
+        game.url = 'http://store.steampowered.com/app/%d' %steamAppId
         db.session.add(game)
+
+        steam_requests.game_info(steamAppId, game)
+
         return game
 
     #Update a game
     def update(self):
-        game.image = 'http://cdn.akamai.steamstatic.com/steam/apps/%d/header.jpg' %self.steamAppId
-        game.description = steam_requests.game_description(self.steamAppId)
-        db.session.add(game)
+        #TODO
         return game
 
     #Remove a game
@@ -88,7 +119,26 @@ class Game(db.Model):
     def add_price(self, price):
         self.priceCurrent = price.price
         self.prices.append(price)
-        db.session.merge(self)
+        return self
+
+    #Adds a tag to this game
+    def add_tag(self, tag):
+        self.tags.append(tag)
+        return self
+
+    #Adds a tag to this game
+    def add_genre(self, genre):
+        self.genres.append(genre)
+        return self
+
+    #Adds a tag to this game
+    def add_developer(self, developer):
+        self.developers.append(developer)
+        return self
+
+        #Adds a tag to this game
+    def add_publisher(self, publisher):
+        self.publishers.append(publisher)
         return self
 
     #How Game is printed
@@ -108,3 +158,59 @@ class Price(db.Model):
     def __repr__(self):
         return '<Price= appId: %s, price: %d, ts: %s>' %(self.steamAppId , self.price, str(self.ts))
 
+
+#Model for a tag
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    info = db.Column(db.String(200))
+    url = db.Column(db.String(200))
+
+    @staticmethod
+    def get_or_create(info, url):
+        tag =  Tag.query.filter_by(info = info).first()
+        if tag is None:
+            tag = Tag(info=info, url=url)
+            db.session.add(tag)
+        return tag
+
+#Model for a genre
+class Genre(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    info = db.Column(db.String(200))
+    url = db.Column(db.String(200))
+
+    @staticmethod
+    def get_or_create(info, url):
+        genre =  Genre.query.filter_by(info = info).first()
+        if genre is None:
+            genre = Genre(info=info, url=url)
+            db.session.add(genre)
+        return genre
+
+#Model for a developer
+class Developer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    info = db.Column(db.String(200))
+    url = db.Column(db.String(200))
+
+    @staticmethod
+    def get_or_create(info, url):
+        developer =  Developer.query.filter_by(info = info).first()
+        if developer is None:
+            developer = Developer(info=info, url=url)
+            db.session.add(developer)
+        return developer
+
+#Model for a publisher
+class Publisher(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    info = db.Column(db.String(200))
+    url = db.Column(db.String(200))
+
+    @staticmethod
+    def get_or_create(info, url):
+        publisher =  Publisher.query.filter_by(info = info).first()
+        if publisher is None:
+            publisher = Publisher(info=info, url=url)
+            db.session.add(publisher)
+        return publisher
